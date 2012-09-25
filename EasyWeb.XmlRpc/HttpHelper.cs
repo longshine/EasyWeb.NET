@@ -19,6 +19,11 @@ namespace LX.EasyWeb.XmlRpc
 {
     static class HttpHelper
     {
+        public const String ContentLengthHeader = "Content-Length";
+        public const String ContentEncodingHeader = "Content-Encoding";
+        public const String AcceptEncodingHeader = "Accept-Encoding";
+        public const String AuthorizationHeader = "Authorization";
+
         public static String GetRequestUri(ITransportHeaders requestHeaders)
         {
             return (String)requestHeaders["__RequestUri"];
@@ -46,12 +51,12 @@ namespace LX.EasyWeb.XmlRpc
 
         public static Boolean IsUsingGzipEncoding(ITransportHeaders requestHeaders)
         {
-            return IsUsingGzipEncoding(GetContentEncoding(requestHeaders));
+            return HasGzipEncoding(GetContentEncoding(requestHeaders));
         }
 
         public static Boolean IsAcceptingGzipEncoding(ITransportHeaders requestHeaders)
         {
-            return IsUsingGzipEncoding(GetAcceptEncoding(requestHeaders));
+            return HasGzipEncoding(GetAcceptEncoding(requestHeaders));
         }
 
         public static void ParseAuthorization(XmlRpcHttpRequestConfig config, String line)
@@ -80,7 +85,7 @@ namespace LX.EasyWeb.XmlRpc
             }
         }
 
-        private static Boolean IsUsingGzipEncoding(String header)
+        public static Boolean HasGzipEncoding(String header)
         {
             if (String.IsNullOrEmpty(header))
                 return false;

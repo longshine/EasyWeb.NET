@@ -20,6 +20,7 @@ namespace LX.EasyWeb.XmlRpc.Parser
     {
         private ITypeFactory _typeFactory;
         private IXmlRpcStreamConfig _config;
+        private List<Object> _params;
 
         public XmlRpcRequestParser(IXmlRpcStreamConfig config, ITypeFactory typeFactory, XmlReader reader)
         {
@@ -30,7 +31,10 @@ namespace LX.EasyWeb.XmlRpc.Parser
 
         public String MethodName { get; private set; }
 
-        public IList<Object> Parameters { get; private set; }
+        public Object[] Parameters
+        {
+            get { return _params.ToArray(); }
+        }
 
         private void Parse(XmlReader reader)
         {
@@ -55,13 +59,13 @@ namespace LX.EasyWeb.XmlRpc.Parser
             if (reader.EOF)
                 return;
             RecursiveTypeParser.CheckTag(reader, XmlRpcSpec.PARAMS_TAG);
-            Parameters = new List<Object>();
+            _params = new List<Object>();
             do
             {
                 reader.Read();
                 if (reader.NodeType == XmlNodeType.Element)
                 {
-                    Parameters.Add(ReadParam(reader));
+                    _params.Add(ReadParam(reader));
                 }
             } while (reader.NodeType != XmlNodeType.EndElement || !XmlRpcSpec.PARAMS_TAG.Equals(reader.LocalName));
         }
