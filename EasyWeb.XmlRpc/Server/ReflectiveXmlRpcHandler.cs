@@ -39,7 +39,19 @@ namespace LX.EasyWeb.XmlRpc.Server
             if (_mapping.AuthenticationHandler != null && !_mapping.AuthenticationHandler.IsAuthorized(request))
                 throw new XmlRpcException("Not authorized");
             XmlRpcMethod method = GetMethod(request.Parameters);
+            ConvertParams(method.TypeConverters, request.Parameters);
             return Invoke(method.Method, _targetProvider == null ? request.Target : _targetProvider.GetTarget(request), request.Parameters);
+        }
+
+        public MethodInfo GetMethod(IXmlRpcRequest request)
+        {
+            return GetMethod(request.Parameters).Method;
+        }
+
+        private static void ConvertParams(ITypeConverter[] converters, Object[] args)
+        {
+            for (Int32 i = 0; i < args.Length; i++)
+                args[i] = converters[i].Convert(args[i]);
         }
 
         private Object Invoke(MethodInfo methodInfo, Object target, Object[] parameters)
@@ -70,13 +82,7 @@ namespace LX.EasyWeb.XmlRpc.Server
                         }
                     }
                     if (match)
-                    {
-                        for (Int32 i = 0; i < args.Length; i++)
-                        {
-                            args[i] = m.TypeConverters[i].Convert(args[i]);
-                        }
                         return m;
-                    }
                 }
             }
             throw new XmlRpcException("No method matching arguments: " + Util.GetSignature(args));
