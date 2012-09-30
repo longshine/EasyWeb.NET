@@ -23,7 +23,7 @@ namespace LX.EasyWeb.XmlRpc.Server
     /// </summary>
     public abstract class XmlRpcStreamServer : XmlRpcServer
     {
-        private IXmlWriterFactory _xmlWriterFactory = new XmlTextWriterFactory();
+        private IXmlWriterFactory _xmlWriterFactory;
 
         /// <summary>
         /// Gets or sets the factory that creates <see cref="System.Xml.XmlWriter"/>.
@@ -89,9 +89,10 @@ namespace LX.EasyWeb.XmlRpc.Server
 
         private void WriteResponse(IXmlRpcStreamRequestConfig config, Stream outputStream, IXmlRpcResponse response)
         {
-            XmlWriter writer = XmlWriterFactory.GetXmlWriter(config, outputStream);
-            new XmlRpcResponseSerializer().WriteResponse(writer, response, config, TypeSerializerFactory);
-            writer.Close();
+            XmlRpcResponseSerializer serializer = new XmlRpcResponseSerializer();
+            if (_xmlWriterFactory != null)
+                serializer.XmlWriterFactory = _xmlWriterFactory;
+            serializer.WriteResponse(outputStream, response, config, TypeSerializerFactory);
         }
 
         private IXmlRpcRequest GetRequest(IXmlRpcStreamRequestConfig config, Stream inputStream)

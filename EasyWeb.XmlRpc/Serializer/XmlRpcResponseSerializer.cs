@@ -12,6 +12,7 @@
 
 using System;
 using System.Collections;
+using System.IO;
 using System.Xml;
 
 namespace LX.EasyWeb.XmlRpc.Serializer
@@ -21,6 +22,17 @@ namespace LX.EasyWeb.XmlRpc.Serializer
     /// </summary>
     public class XmlRpcResponseSerializer : ITypeSerializer
     {
+        private IXmlWriterFactory _xmlWriterFactory = new XmlTextWriterFactory();
+
+        /// <summary>
+        /// Gets or sets the factory that creates <see cref="System.Xml.XmlWriter"/>.
+        /// </summary>
+        public IXmlWriterFactory XmlWriterFactory
+        {
+            get { return _xmlWriterFactory; }
+            set { _xmlWriterFactory = value; }
+        }
+
         /// <summary>
         /// Serializes an XML-RPC response to a <see cref="System.Xml.XmlWriter"/>.
         /// </summary>
@@ -41,6 +53,22 @@ namespace LX.EasyWeb.XmlRpc.Serializer
 
             writer.WriteEndElement();
             writer.WriteEndDocument();
+        }
+
+        /// <summary>
+        /// Serializes an XML-RPC response to a response stream.
+        /// </summary>
+        /// <param name="writer">the <see cref="System.IO.Stream"/> to write</param>
+        /// <param name="request">the <see cref="LX.EasyWeb.XmlRpc.IXmlRpcResponse"/> to serialize</param>
+        /// <param name="config">the context configuration</param>
+        /// <param name="typeSerializerFactory">the <see cref="LX.EasyWeb.XmlRpc.Serializer.ITypeSerializerFactory"/> to get type serializers</param>
+        /// <exception cref="System.Xml.XmlException">failed writing the response XML</exception>
+        public void WriteResponse(Stream responseStream, IXmlRpcResponse response, IXmlRpcStreamRequestConfig config, ITypeSerializerFactory typeSerializerFactory)
+        {
+            using (XmlWriter writer = _xmlWriterFactory.GetXmlWriter(config, responseStream))
+            {
+                WriteResponse(writer, response, config, typeSerializerFactory);
+            }
         }
 
         /// <summary>

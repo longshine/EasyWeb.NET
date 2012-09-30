@@ -12,6 +12,7 @@
 
 using System;
 using System.Collections;
+using System.IO;
 using System.Xml;
 
 namespace LX.EasyWeb.XmlRpc.Serializer
@@ -21,6 +22,17 @@ namespace LX.EasyWeb.XmlRpc.Serializer
     /// </summary>
     public class XmlRpcRequestSerializer : ITypeSerializer
     {
+        private IXmlWriterFactory _xmlWriterFactory = new XmlTextWriterFactory();
+
+        /// <summary>
+        /// Gets or sets the factory that creates <see cref="System.Xml.XmlWriter"/>.
+        /// </summary>
+        public IXmlWriterFactory XmlWriterFactory
+        {
+            get { return _xmlWriterFactory; }
+            set { _xmlWriterFactory = value; }
+        }
+
         /// <summary>
         /// Deserializes an XML-RPC request from a <see cref="System.Xml.XmlReader"/>.
         /// </summary>
@@ -51,6 +63,22 @@ namespace LX.EasyWeb.XmlRpc.Serializer
         }
 
         /// <summary>
+        /// Deserializes an XML-RPC request from a request stream.
+        /// </summary>
+        /// <param name="reader">the <see cref="System.IO.Stream"/> to read</param>
+        /// <param name="config">the context configuration</param>
+        /// <param name="typeSerializerFactory">the <see cref="LX.EasyWeb.XmlRpc.Serializer.ITypeSerializerFactory"/> to get type serializers</param>
+        /// <returns>a <see cref="LX.EasyWeb.XmlRpc.IXmlRpcRequest"/> read from the reader</returns>
+        /// <exception cref="System.Xml.XmlException">failed parsing the request XML</exception>
+        public IXmlRpcRequest ReadRequest(Stream requestStream, IXmlRpcStreamConfig config, ITypeSerializerFactory typeSerializerFactory)
+        {
+            using (XmlReader reader = new XmlTextReader(requestStream))
+            {
+                return ReadRequest(reader, config, typeSerializerFactory);
+            }
+        }
+
+        /// <summary>
         /// Serializes an XML-RPC request to a <see cref="System.Xml.XmlWriter"/>.
         /// </summary>
         /// <param name="writer">the <see cref="System.Xml.XmlWriter"/> to write</param>
@@ -68,6 +96,22 @@ namespace LX.EasyWeb.XmlRpc.Serializer
 
             writer.WriteEndElement();
             writer.WriteEndDocument();
+        }
+
+        /// <summary>
+        /// Serializes an XML-RPC request to a request stream.
+        /// </summary>
+        /// <param name="writer">the <see cref="System.IO.Stream"/> to write</param>
+        /// <param name="request">the <see cref="LX.EasyWeb.XmlRpc.IXmlRpcRequest"/> to serialize</param>
+        /// <param name="config">the context configuration</param>
+        /// <param name="typeSerializerFactory">the <see cref="LX.EasyWeb.XmlRpc.Serializer.ITypeSerializerFactory"/> to get type serializers</param>
+        /// <exception cref="System.Xml.XmlException">failed writing the request XML</exception>
+        public void WriteRequest(Stream requestStream, IXmlRpcRequest request, IXmlRpcStreamConfig config, ITypeSerializerFactory typeSerializerFactory)
+        {
+            using (XmlWriter writer = _xmlWriterFactory.GetXmlWriter(config, requestStream))
+            {
+                WriteRequest(writer, request, config, typeSerializerFactory);
+            }
         }
 
         private static Object[] ToArray(IList list)
