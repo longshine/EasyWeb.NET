@@ -1,4 +1,5 @@
 ﻿using System;
+using LX.EasyWeb.XmlRpc.Serializer;
 
 namespace LX.EasyWeb.XmlRpc.Server
 {
@@ -6,14 +7,17 @@ namespace LX.EasyWeb.XmlRpc.Server
     {
         public XmlRpcServer()
         {
-            TypeFactory = new TypeFactory();
-            Config = new XmlRpcServerConfig();
+            TypeSerializerFactory = new TypeSerializerFactory();
             TypeConverterFactory = new TypeConverterFactory();
+
+            XmlRpcServerConfig config = new XmlRpcServerConfig();
+            config.EnabledForExtensions = true;
+            Config = config;
         }
 
         public ITypeConverterFactory TypeConverterFactory { get; set; }
 
-        public ITypeFactory TypeFactory { get; set; }
+        public ITypeSerializerFactory TypeSerializerFactory { get; set; }
 
         public IXmlRpcServerConfig Config { get; set; }
 

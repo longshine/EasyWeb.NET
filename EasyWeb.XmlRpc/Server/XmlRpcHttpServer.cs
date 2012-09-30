@@ -27,6 +27,7 @@ namespace LX.EasyWeb.XmlRpc.Server
 
         private void HandlePOST(HttpRequest request, HttpResponse response)
         {
+            response.ContentType = "text/xml";
             IXmlRpcStreamRequestConfig config = GetConfig(request);
             ServerStream stream = new HttpStream(request, response);
             Execute(config, stream);
@@ -62,8 +63,7 @@ namespace LX.EasyWeb.XmlRpc.Server
             rc.EnabledForExtensions = serverConfig.EnabledForExtensions;
             rc.GzipCompressing = HttpHelper.HasGzipEncoding(request.Headers[HttpHelper.ContentEncodingHeader]);
             rc.GzipRequesting = HttpHelper.HasGzipEncoding(request.Headers[HttpHelper.AcceptEncodingHeader]);
-            // TODO get request encoding
-            //rc.Encoding
+            rc.Encoding = request.ContentEncoding.WebName;
             rc.EnabledForExceptions = serverConfig.EnabledForExceptions;
             HttpHelper.ParseAuthorization(rc, request.Headers[HttpHelper.AuthorizationHeader]);
             return rc;
@@ -71,7 +71,7 @@ namespace LX.EasyWeb.XmlRpc.Server
 
         private void SetResponseHeader(ServerStream serverStream, String header, String value)
         {
-            ((HttpStream)serverStream).Response.Headers[header] = value;
+            ((HttpStream)serverStream).Response.AppendHeader(header, value);
         }
 
         class HttpStream : ServerStream

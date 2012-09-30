@@ -30,7 +30,7 @@ namespace LX.EasyWeb.XmlRpc.Server
         protected override IXmlRpcHandler GetHandler(IXmlRpcRequest request)
         {
             request.Target = this;
-            return _mapping.GetHandler(request.Method);
+            return _mapping.GetHandler(request.MethodName);
         }
     }
 }

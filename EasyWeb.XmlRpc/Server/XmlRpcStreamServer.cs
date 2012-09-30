@@ -1,51 +1,56 @@
 ﻿using System;
 using System.IO;
 using System.IO.Compression;
-using LX.EasyWeb.XmlRpc.Parser;
 using System.Xml;
+using LX.EasyWeb.XmlRpc.Serializer;
 
 namespace LX.EasyWeb.XmlRpc.Server
 {
     public abstract class XmlRpcStreamServer : XmlRpcServer
     {
+        private IXmlWriterFactory _xmlWriterFactory = new XmlTextWriterFactory();
+
+        public IXmlWriterFactory XmlWriterFactory
+        {
+            get { return _xmlWriterFactory; }
+            set { _xmlWriterFactory = value; }
+        }
+
         public void Execute(IXmlRpcStreamRequestConfig config, ServerStream serverStream)
         {
-            Object result = null;
-            Exception exception = null;
             Stream inputStream;
+            XmlRpcResponse response = new XmlRpcResponse();
 
             try
             {
                 inputStream = GetInputStream(config, serverStream);
                 IXmlRpcRequest request = GetRequest(config, inputStream);
-                result = Execute(request);
+                response.Result = Execute(request);
+            }
+            catch (XmlRpcException ex)
+            {
+                response.Fault = ex.Fault;
             }
             catch (Exception ex)
             {
-                exception = ex;
+                response.Fault = new XmlRpcFault(0, ex.Message, ex);
             }
 
             Stream outputStream = GetOutputStream(config, serverStream);
-            if (exception == null)
-                WriteResponse(config, outputStream, result);
-            else
-                WriteError(config, outputStream, exception);
+            WriteResponse(config, outputStream, response);
         }
 
-        private void WriteResponse(IXmlRpcStreamRequestConfig config, Stream outputStream, Object result)
+        private void WriteResponse(IXmlRpcStreamRequestConfig config, Stream outputStream, IXmlRpcResponse response)
         {
-            throw new NotImplementedException();
-        }
-
-        private void WriteError(IXmlRpcStreamRequestConfig config, Stream outputStream, Exception result)
-        {
-            throw new NotImplementedException();
+            XmlWriter writer = XmlWriterFactory.GetXmlWriter(config, outputStream);
+            new XmlRpcResponseSerializer().WriteResponse(writer, response, config, TypeSerializerFactory);
+            writer.Close();
         }
 
         private IXmlRpcRequest GetRequest(IXmlRpcStreamRequestConfig config, Stream inputStream)
         {
-            XmlRpcRequestParser parser = new XmlRpcRequestParser(config, TypeFactory, new XmlTextReader(inputStream));
-            return new XmlRpcRequest(parser.MethodName, parser.Parameters);
+            XmlRpcRequestSerializer parser = new XmlRpcRequestSerializer();
+            return parser.ReadRequest(new XmlTextReader(inputStream), config, TypeSerializerFactory);
         }
 
         protected virtual Stream GetInputStream(IXmlRpcStreamRequestConfig config, ServerStream serverStream)

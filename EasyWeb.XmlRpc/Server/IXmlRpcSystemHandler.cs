@@ -38,7 +38,7 @@ namespace LX.EasyWeb.XmlRpc.Server
         {
             String[][] sig = GetSystemHandler().GetMethodSignature(methodName);
             if (sig == null)
-                throw new XmlRpcFaultException(881, "No metadata available for method: " + methodName);
+                throw new XmlRpcException("No metadata available for method: " + methodName);
             return sig;
         }
 
