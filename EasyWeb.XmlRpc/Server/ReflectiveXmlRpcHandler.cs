@@ -1,4 +1,16 @@
-﻿using System;
+﻿//
+// LX.EasyWeb.XmlRpc.Server.IXmlRpcHandlerMapping.cs
+//
+// Authors:
+//	Longshine He <longshinehe@users.sourceforge.net>
+//
+// Copyright (c) 2012 Longshine He
+//
+// This code is distributed in the hope that it will be useful,
+// but WITHOUT WARRANTY OF ANY KIND.
+//
+
+using System;
 using System.Reflection;
 
 namespace LX.EasyWeb.XmlRpc.Server
@@ -27,7 +39,19 @@ namespace LX.EasyWeb.XmlRpc.Server
             if (_mapping.AuthenticationHandler != null && !_mapping.AuthenticationHandler.IsAuthorized(request))
                 throw new XmlRpcException("Not authorized");
             XmlRpcMethod method = GetMethod(request.Parameters);
-            return method.Method.Invoke(_targetProvider == null ? request.Target : _targetProvider.GetTarget(request), request.Parameters);
+            return Invoke(method.Method, _targetProvider == null ? request.Target : _targetProvider.GetTarget(request), request.Parameters);
+        }
+
+        private Object Invoke(MethodInfo methodInfo, Object target, Object[] parameters)
+        {
+            try
+            {
+                return methodInfo.Invoke(target, parameters);
+            }
+            catch (Exception ex)
+            {
+                throw new XmlRpcException("Failed to invoke method " + methodInfo.Name + ": " + ex.Message, ex);
+            }
         }
 
         private XmlRpcMethod GetMethod(Object[] args)

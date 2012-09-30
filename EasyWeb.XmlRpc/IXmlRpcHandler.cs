@@ -12,6 +12,7 @@ namespace LX.EasyWeb.XmlRpc
         /// </summary>
         /// <param name="request">the request being performed</param>
         /// <returns>the result object</returns>
+        /// <exception cref="LX.EasyWeb.XmlRpc.XmlRpcException">an exception occurs when handling the request</exception>
         Object Execute(IXmlRpcRequest request);
     }
 

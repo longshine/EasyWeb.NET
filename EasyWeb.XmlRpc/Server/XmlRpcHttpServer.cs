@@ -1,14 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web;
+﻿//
+// LX.EasyWeb.XmlRpc.Server.XmlRpcHttpServer.cs
+//
+// Authors:
+//	Longshine He <longshinehe@users.sourceforge.net>
+//
+// Copyright (c) 2012 Longshine He
+//
+// This code is distributed in the hope that it will be useful,
+// but WITHOUT WARRANTY OF ANY KIND.
+//
+
+using System;
 using System.IO;
+using System.Web;
 
 namespace LX.EasyWeb.XmlRpc.Server
 {
+    /// <summary>
+    /// Subclass of <see cref="LX.EasyWeb.XmlRpc.Server.XmlRpcStreamServer"/> for deriving HTTP servers.
+    /// </summary>
     public abstract class XmlRpcHttpServer : XmlRpcStreamServer
     {
-        protected void HandleHttpRequest(HttpRequest request, HttpResponse response)
+        /// <summary>
+        /// Handles HTTP requests.
+        /// </summary>
+        public void HandleHttpRequest(HttpRequest request, HttpResponse response)
         {
             if (request.HttpMethod == "GET")
                 HandleGET(request, response);
@@ -18,6 +34,9 @@ namespace LX.EasyWeb.XmlRpc.Server
                 HandleUnsupportedMethod(request, response);
         }
 
+        /// <summary>
+        /// Gets output stream.
+        /// </summary>
         protected override Stream GetOutputStream(IXmlRpcStreamRequestConfig config, ServerStream serverStream)
         {
             if (config.EnabledForExtensions && config.GzipRequesting)
@@ -29,8 +48,7 @@ namespace LX.EasyWeb.XmlRpc.Server
         {
             response.ContentType = "text/xml";
             IXmlRpcStreamRequestConfig config = GetConfig(request);
-            ServerStream stream = new HttpStream(request, response);
-            Execute(config, stream);
+            Execute(config, new HttpStream(request, response));
         }
 
         private void HandleGET(HttpRequest request, HttpResponse response)

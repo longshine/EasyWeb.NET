@@ -16,8 +16,19 @@ using System.Xml;
 
 namespace LX.EasyWeb.XmlRpc.Serializer
 {
+    /// <summary>
+    /// Provides methods to serialize and deserialize XML-RPC requests.
+    /// </summary>
     public class XmlRpcRequestSerializer : ITypeSerializer
     {
+        /// <summary>
+        /// Deserializes an XML-RPC request from a <see cref="System.Xml.XmlReader"/>.
+        /// </summary>
+        /// <param name="reader">the <see cref="System.Xml.XmlReader"/> to read</param>
+        /// <param name="config">the context configuration</param>
+        /// <param name="typeSerializerFactory">the <see cref="LX.EasyWeb.XmlRpc.Serializer.ITypeSerializerFactory"/> to get type serializers</param>
+        /// <returns>a <see cref="LX.EasyWeb.XmlRpc.IXmlRpcRequest"/> read from the reader</returns>
+        /// <exception cref="System.Xml.XmlException">failed parsing the request XML</exception>
         public IXmlRpcRequest ReadRequest(XmlReader reader, IXmlRpcStreamConfig config, ITypeSerializerFactory typeSerializerFactory)
         {
             String methodName = null;
@@ -39,6 +50,14 @@ namespace LX.EasyWeb.XmlRpc.Serializer
             return new XmlRpcRequest(methodName, args == null ? null : ToArray(args));
         }
 
+        /// <summary>
+        /// Serializes an XML-RPC request to a <see cref="System.Xml.XmlWriter"/>.
+        /// </summary>
+        /// <param name="writer">the <see cref="System.Xml.XmlWriter"/> to write</param>
+        /// <param name="request">the <see cref="LX.EasyWeb.XmlRpc.IXmlRpcRequest"/> to serialize</param>
+        /// <param name="config">the context configuration</param>
+        /// <param name="typeSerializerFactory">the <see cref="LX.EasyWeb.XmlRpc.Serializer.ITypeSerializerFactory"/> to get type serializers</param>
+        /// <exception cref="System.Xml.XmlException">failed writing the request XML</exception>
         public void WriteRequest(XmlWriter writer, IXmlRpcRequest request, IXmlRpcStreamConfig config, ITypeSerializerFactory typeSerializerFactory)
         {
             writer.WriteStartDocument();
@@ -51,7 +70,7 @@ namespace LX.EasyWeb.XmlRpc.Serializer
             writer.WriteEndDocument();
         }
 
-        private Object[] ToArray(IList list)
+        private static Object[] ToArray(IList list)
         {
             Object[] array = new Object[list.Count];
             for (Int32 i = 0; i < array.Length; i++)
@@ -67,12 +86,12 @@ namespace LX.EasyWeb.XmlRpc.Serializer
             return reader.ReadElementString();
         }
 
-        object ITypeSerializer.Read(XmlReader reader, IXmlRpcStreamConfig config, ITypeSerializerFactory typeSerializerFactory)
+        Object ITypeSerializer.Read(XmlReader reader, IXmlRpcStreamConfig config, ITypeSerializerFactory typeSerializerFactory)
         {
             return ReadRequest(reader, config, typeSerializerFactory);
         }
 
-        void ITypeSerializer.Write(XmlWriter writer, object obj, IXmlRpcStreamConfig config, ITypeSerializerFactory typeSerializerFactory)
+        void ITypeSerializer.Write(XmlWriter writer, Object obj, IXmlRpcStreamConfig config, ITypeSerializerFactory typeSerializerFactory)
         {
             WriteRequest(writer, (IXmlRpcRequest)obj, config, typeSerializerFactory);
         }

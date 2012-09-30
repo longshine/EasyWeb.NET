@@ -16,8 +16,19 @@ using System.Xml;
 
 namespace LX.EasyWeb.XmlRpc.Serializer
 {
+    /// <summary>
+    /// Provides methods to serialize and deserialize XML-RPC responses.
+    /// </summary>
     public class XmlRpcResponseSerializer : ITypeSerializer
     {
+        /// <summary>
+        /// Serializes an XML-RPC response to a <see cref="System.Xml.XmlWriter"/>.
+        /// </summary>
+        /// <param name="writer">the <see cref="System.Xml.XmlWriter"/> to write</param>
+        /// <param name="request">the <see cref="LX.EasyWeb.XmlRpc.IXmlRpcResponse"/> to serialize</param>
+        /// <param name="config">the context configuration</param>
+        /// <param name="typeSerializerFactory">the <see cref="LX.EasyWeb.XmlRpc.Serializer.ITypeSerializerFactory"/> to get type serializers</param>
+        /// <exception cref="System.Xml.XmlException">failed writing the response XML</exception>
         public void WriteResponse(XmlWriter writer, IXmlRpcResponse response, IXmlRpcStreamRequestConfig config, ITypeSerializerFactory typeSerializerFactory)
         {
             writer.WriteStartDocument();
@@ -32,6 +43,14 @@ namespace LX.EasyWeb.XmlRpc.Serializer
             writer.WriteEndDocument();
         }
 
+        /// <summary>
+        /// Deserializes an XML-RPC response from a <see cref="System.Xml.XmlReader"/>.
+        /// </summary>
+        /// <param name="reader">the <see cref="System.Xml.XmlReader"/> to read</param>
+        /// <param name="config">the context configuration</param>
+        /// <param name="typeSerializerFactory">the <see cref="LX.EasyWeb.XmlRpc.Serializer.ITypeSerializerFactory"/> to get type serializers</param>
+        /// <returns>a <see cref="LX.EasyWeb.XmlRpc.IXmlRpcResponse"/> read from the reader</returns>
+        /// <exception cref="System.Xml.XmlException">failed parsing the response XML</exception>
         public IXmlRpcResponse ReadResponse(XmlReader reader, IXmlRpcStreamConfig config, ITypeSerializerFactory typeSerializerFactory)
         {
             IXmlRpcResponse response = null;

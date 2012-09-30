@@ -18,6 +18,10 @@ namespace LX.EasyWeb.XmlRpc.Serializer
 {
     abstract class RecursiveTypeSerializer : TypeSerializer
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <exception cref="System.Xml.XmlException"></exception>
         public static Object ReadValue(XmlReader reader, IXmlRpcStreamConfig config, ITypeSerializerFactory typeFactory)
         {
             CheckTag(reader, XmlRpcSpec.VALUE_TAG);
@@ -121,7 +125,7 @@ namespace LX.EasyWeb.XmlRpc.Serializer
             throw new XmlException("Expected " + expectedTag + " element, got " + new XmlQualifiedName(reader.LocalName, reader.NamespaceURI));
         }
 
-        protected static void ThrowUnknowType(XmlReader reader)
+        private static void ThrowUnknowType(XmlReader reader)
         {
             throw new XmlException("Unknown type: " + new XmlQualifiedName(reader.LocalName, reader.NamespaceURI));
         }
