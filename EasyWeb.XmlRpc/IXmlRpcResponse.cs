@@ -1,5 +1,5 @@
 ﻿//
-// LX.EasyWeb.XmlRpc.IXmlRpcRequest.cs
+// LX.EasyWeb.XmlRpc.IXmlRpcResponse.cs
 //
 // Authors:
 //	Longshine He <longshinehe@users.sourceforge.net>
@@ -15,21 +15,17 @@ using System;
 namespace LX.EasyWeb.XmlRpc
 {
     /// <summary>
-    /// Represents an XML-RPC request.
+    /// Represents an XML-RPC response.
     /// </summary>
-    public interface IXmlRpcRequest
+    public interface IXmlRpcResponse
     {
         /// <summary>
-        /// Gets the request method name.
+        /// Gets the result, or null if a fault occurs.
         /// </summary>
-        String MethodName { get; }
+        Object Result { get; }
         /// <summary>
-        /// Gets the request parameters.
+        /// Gets the fault occured, or null if everything is fine.
         /// </summary>
-        Object[] Parameters { get; }
-        /// <summary>
-        /// Gets the request target object.
-        /// </summary>
-        Object Target { get; set; }
+        IXmlRpcFault Fault { get; }
     }
 }

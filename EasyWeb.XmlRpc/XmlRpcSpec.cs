@@ -11,13 +11,17 @@
 //
 
 using System;
+using System.Text;
 
 namespace LX.EasyWeb.XmlRpc
 {
     static class XmlRpcSpec
     {
         public const String METHOD_CALL_TAG = "methodCall";
+        public const String METHOD_RESPONSE_TAG = "methodResponse";
+
         public const String METHOD_NAME_TAG = "methodName";
+
         public const String PARAMS_TAG = "params";
         public const String PARAM_TAG = "param";
         public const String VALUE_TAG = "value";
@@ -34,5 +38,11 @@ namespace LX.EasyWeb.XmlRpc
         public const String STRUCT_TAG = "struct";
         public const String MEMBER_TAG = "member";
         public const String MEMBER_NAME_TAG = "name";
+
+        public const String FAULT_TAG = "fault";
+        public const String FAULT_CODE_TAG = "faultCode";
+        public const String FAULT_STRING_TAG = "faultString";
+
+        public static readonly Encoding DEFAULT_ENCODING = Encoding.UTF8;
     }
 }

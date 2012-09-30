@@ -1,26 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Reflection;
+﻿//
+// LX.EasyWeb.XmlRpc.XmlRpcRequest.cs
+//
+// Authors:
+//	Longshine He <longshinehe@users.sourceforge.net>
+//
+// Copyright (c) 2012 Longshine He
+//
+// This code is distributed in the hope that it will be useful,
+// but WITHOUT WARRANTY OF ANY KIND.
+//
+
+using System;
 
 namespace LX.EasyWeb.XmlRpc
 {
-    public class XmlRpcRequest : IXmlRpcRequest
+#if DEBUG
+    public
+#endif
+    class XmlRpcRequest : IXmlRpcRequest
     {
         public XmlRpcRequest()
         { }
 
         public XmlRpcRequest(String method, Object[] parameters)
         {
-            Method = method;
+            MethodName = method;
             Parameters = parameters;
         }
 
-        public String Method { get; private set; }
+        public String MethodName { get; private set; }
         public Object[] Parameters { get; private set; }
-        public MethodInfo MethodInfo { get; private set; }
-        public Guid ProxyId { get; private set; }
-        public String XmlRpcMethod { get; private set; }
         public Object Target { get; set; }
     }
 }
