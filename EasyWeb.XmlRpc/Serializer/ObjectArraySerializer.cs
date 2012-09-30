@@ -28,8 +28,7 @@ namespace LX.EasyWeb.XmlRpc.Serializer
                 reader.Read();
                 if (reader.NodeType == XmlNodeType.Element)
                 {
-                    if (!String.IsNullOrEmpty(reader.NamespaceURI) || !XmlRpcSpec.DATA_TAG.Equals(reader.LocalName))
-                        ThrowUnexpectedTag(XmlRpcSpec.DATA_TAG, reader);
+                    CheckTag(reader, XmlRpcSpec.DATA_TAG);
                     do
                     {
                         reader.Read();

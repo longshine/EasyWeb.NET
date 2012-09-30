@@ -35,7 +35,7 @@ namespace LX.EasyWeb.XmlRpc.Serializer
                 {
                     ITypeSerializer parser = typeFactory.GetSerializer(config, reader.NamespaceURI, reader.LocalName);
                     if (parser == null)
-                        ThrowUnknowType(reader);
+                        throw new XmlException("Unknown type: " + new XmlQualifiedName(reader.LocalName, reader.NamespaceURI));
                     else
                         value = parser.Read(reader, config, typeFactory);
                 }
@@ -103,10 +103,10 @@ namespace LX.EasyWeb.XmlRpc.Serializer
                 ;
         }
 
-        public static void CheckTag(XmlReader reader, String tag)
+        public static void CheckTag(XmlReader reader, String expectedTag)
         {
-            if (!String.IsNullOrEmpty(reader.NamespaceURI) || !tag.Equals(reader.LocalName))
-                ThrowUnexpectedTag(tag, reader);
+            if (!String.IsNullOrEmpty(reader.NamespaceURI) || !expectedTag.Equals(reader.LocalName))
+                throw new XmlException("Expected " + expectedTag + " element, got " + new XmlQualifiedName(reader.LocalName, reader.NamespaceURI));
         }
         
         protected override void DoWrite(XmlWriter writer, Object obj, IXmlRpcStreamConfig config, ITypeSerializerFactory typeSerializerFactory)
@@ -119,16 +119,6 @@ namespace LX.EasyWeb.XmlRpc.Serializer
         }
 
         protected abstract void DoWrite(XmlWriter writer, Object value, IXmlRpcStreamConfig config, ITypeSerializerFactory typeSerializerFactory, IList nestedObjs);
-
-        protected static void ThrowUnexpectedTag(String expectedTag, XmlReader reader)
-        {
-            throw new XmlException("Expected " + expectedTag + " element, got " + new XmlQualifiedName(reader.LocalName, reader.NamespaceURI));
-        }
-
-        private static void ThrowUnknowType(XmlReader reader)
-        {
-            throw new XmlException("Unknown type: " + new XmlQualifiedName(reader.LocalName, reader.NamespaceURI));
-        }
 
         private static Object ReadParam(XmlReader reader, IXmlRpcStreamConfig config, ITypeSerializerFactory typeSerializerFactory)
         {

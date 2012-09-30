@@ -28,15 +28,13 @@ namespace LX.EasyWeb.XmlRpc.Serializer
                 reader.Read();
                 if (reader.NodeType == XmlNodeType.Element)
                 {
-                    if (!String.IsNullOrEmpty(reader.NamespaceURI) || !XmlRpcSpec.MEMBER_TAG.Equals(reader.LocalName))
-                        ThrowUnexpectedTag(XmlRpcSpec.MEMBER_TAG, reader);
+                    CheckTag(reader, XmlRpcSpec.MEMBER_TAG);
                     do
                     {
                         reader.Read();
                         if (reader.NodeType == XmlNodeType.Element)
                         {
-                            if (!String.IsNullOrEmpty(reader.NamespaceURI) || !XmlRpcSpec.MEMBER_NAME_TAG.Equals(reader.LocalName))
-                                ThrowUnexpectedTag(XmlRpcSpec.MEMBER_NAME_TAG, reader);
+                            CheckTag(reader, XmlRpcSpec.MEMBER_NAME_TAG);
 
                             String name = reader.ReadElementContentAsString();
                             if (name == null)
