@@ -23,5 +23,13 @@ namespace LX.EasyWeb.XmlRpc
         /// Gets if extensions are enabled.
         /// </summary>
         Boolean EnabledForExtensions { get; }
+        /// <summary>
+        /// Gets if the tag &lt;int&gt; is used, otherwise &lt;i4&gt; is used.
+        /// </summary>
+        Boolean UseIntTag { get; }
+        /// <summary>
+        /// Gets if the tag &lt;string&gt; is used.
+        /// </summary>
+        Boolean UseStringTag { get; }
     }
 }

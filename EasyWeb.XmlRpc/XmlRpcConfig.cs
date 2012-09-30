@@ -23,5 +23,9 @@ namespace LX.EasyWeb.XmlRpc
         public Boolean ContentLengthOptional { get; set; }
 
         public String Encoding { get; set; }
+
+        public Boolean UseIntTag { get; set; }
+
+        public Boolean UseStringTag { get; set; }
     }
 }
