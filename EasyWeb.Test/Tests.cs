@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
 using LX.EasyWeb.XmlRpc;
-using LX.EasyWeb.XmlRpc.Parser;
-using System.Diagnostics;
-using System.Collections.Generic;
+using LX.EasyWeb.XmlRpc.Serializer;
 
 namespace LX.EasyWeb.Test
 {
@@ -55,8 +55,8 @@ namespace LX.EasyWeb.Test
         <methodName>sample</methodName>
     </methodCall>";
 
-            XmlRpcRequestParser parser = Parse(xmlrpcRequest);
-            Assert.IsEqualTo(parser.MethodName, "sample");
+            IXmlRpcRequest request = Parse(xmlrpcRequest);
+            Assert.IsEqualTo(request.MethodName, "sample");
         }
 
         public void ParseEmptyValue()
@@ -69,8 +69,8 @@ namespace LX.EasyWeb.Test
             </param>
         </params>
     </methodCall>";
-            XmlRpcRequestParser parser = Parse(xmlrpcRequest);
-            Assert.IsNull(parser.Parameters[0]);
+            IXmlRpcRequest request = Parse(xmlrpcRequest);
+            Assert.IsNull(request.Parameters[0]);
         }
 
         public void ParseMalformedValue()
@@ -86,7 +86,7 @@ namespace LX.EasyWeb.Test
             Exception ex = null;
             try
             {
-                XmlRpcRequestParser parser = Parse(xmlrpcRequest);
+                IXmlRpcRequest request = Parse(xmlrpcRequest);
             }
             catch (Exception e)
             {
@@ -212,12 +212,11 @@ namespace LX.EasyWeb.Test
         </params>
     </methodCall>";
 
-            XmlRpcRequestParser parser = Parse(xmlrpcRequest);
-            parser.Read(null, null, null);
+            IXmlRpcRequest request = Parse(xmlrpcRequest);
 
-            Assert.IsEqualTo(parser.Parameters[0], "default string");
-            Assert.IsEqualTo(((Object[])parser.Parameters[1])[0], "default string in array");
-            Assert.IsEqualTo(((IDictionary<String, Object>)parser.Parameters[2])["name"], "default string in struct");
+            Assert.IsEqualTo(request.Parameters[0], "default string");
+            Assert.IsEqualTo(((Object[])request.Parameters[1])[0], "default string in array");
+            Assert.IsEqualTo(((IDictionary<String, Object>)request.Parameters[2])["name"], "default string in struct");
         }
 
         public void ParseMalformedMultiDataInArray()
@@ -238,19 +237,19 @@ namespace LX.EasyWeb.Test
         </params>
     </methodCall>";
 
-            XmlRpcRequestParser parser = null;
+            IXmlRpcRequest request = null;
             Exception ex = null;
             try
             {
-                parser = Parse(xmlrpcRequest);
+                request = Parse(xmlrpcRequest);
             }
             catch (Exception e)
             {
                 ex = e;
             }
 
-            Assert.IsEqualTo(((Object[])parser.Parameters[0])[0], 12);
-            Assert.IsEqualTo(((Object[])parser.Parameters[0])[1], -31);
+            Assert.IsEqualTo(((Object[])request.Parameters[0])[0], 12);
+            Assert.IsEqualTo(((Object[])request.Parameters[0])[1], -31);
             //Assert.IsNotNull(ex);
             //Assert.IsEqualTo(ex.Message, "More than one data element in the array element.");
         }
@@ -267,18 +266,18 @@ namespace LX.EasyWeb.Test
         </params>
     </methodCall>";
 
-            XmlRpcRequestParser parser = null;
+            IXmlRpcRequest request = null;
             Exception ex = null;
             try
             {
-                parser = Parse(xmlrpcRequest);
+                request = Parse(xmlrpcRequest);
             }
             catch (Exception e)
             {
                 ex = e;
             }
 
-            Assert.IsEqualTo(parser.Parameters[0], 2);
+            Assert.IsEqualTo(request.Parameters[0], 2);
             //Assert.IsNotNull(ex);
             //Assert.IsEqualTo(ex.Message, "More than one data element in the array element.");
         }
@@ -298,11 +297,11 @@ namespace LX.EasyWeb.Test
         </params>
     </methodCall>";
 
-            XmlRpcRequestParser parser = null;
+            IXmlRpcRequest request = null;
             Exception ex = null;
             try
             {
-                parser = Parse(xmlrpcRequest);
+                request = Parse(xmlrpcRequest);
             }
             catch (Exception e)
             {
@@ -328,11 +327,11 @@ namespace LX.EasyWeb.Test
         </params>
     </methodCall>";
 
-            XmlRpcRequestParser parser = null;
+            IXmlRpcRequest request = null;
             Exception ex = null;
             try
             {
-                parser = Parse(xmlrpcRequest);
+                request = Parse(xmlrpcRequest);
             }
             catch (Exception e)
             {
@@ -361,11 +360,11 @@ namespace LX.EasyWeb.Test
         </params>
     </methodCall>";
 
-            XmlRpcRequestParser parser = null;
+            IXmlRpcRequest request = null;
             Exception ex = null;
             try
             {
-                parser = Parse(xmlrpcRequest);
+                request = Parse(xmlrpcRequest);
             }
             catch (Exception e)
             {
@@ -406,11 +405,11 @@ namespace LX.EasyWeb.Test
         </params>
     </methodCall>";
 
-            XmlRpcRequestParser parser = null;
+            IXmlRpcRequest request = null;
             Exception ex = null;
             try
             {
-                parser = Parse(xmlrpcRequest);
+                request = Parse(xmlrpcRequest);
             }
             catch (Exception e)
             {
@@ -418,9 +417,9 @@ namespace LX.EasyWeb.Test
             }
 
             Assert.IsNull(ex);
-            Assert.IsEqualTo(((Object[])((IDictionary<String, Object>)parser.Parameters[0])["arrayInStruct"])[0], 1);
-            Assert.IsEqualTo(((Object[])((IDictionary<String, Object>)parser.Parameters[0])["arrayInStruct"])[1], 2);
-            Object[] array = (Object[])parser.Parameters[1];
+            Assert.IsEqualTo(((Object[])((IDictionary<String, Object>)request.Parameters[0])["arrayInStruct"])[0], 1);
+            Assert.IsEqualTo(((Object[])((IDictionary<String, Object>)request.Parameters[0])["arrayInStruct"])[1], 2);
+            Object[] array = (Object[])request.Parameters[1];
             Assert.IsEqualTo(((Object[])((IDictionary<String, Object>)array[0])["arrayInStructInArray"])[0], 3);
             Assert.IsEqualTo(((Object[])((IDictionary<String, Object>)array[0])["arrayInStructInArray"])[1], 4);
         }
@@ -465,36 +464,118 @@ namespace LX.EasyWeb.Test
         </params>
     </methodCall>";
             XmlTextReader reader = new XmlTextReader(new MemoryStream(Encoding.UTF8.GetBytes(xmlrpcRequest)));
-            XmlRpcRequestParser parser = new XmlRpcRequestParser(null, new TypeFactory(), reader);
+            //IXmlRpcRequest request = new XmlRpcRequestSerializer(null, new TypeFactory(), reader);
+            XmlRpcRequestSerializer parser = new XmlRpcRequestSerializer();
+            IXmlRpcRequest request = parser.ReadRequest(reader, null, new TypeSerializerFactory());
 
-            Assert.IsEqualTo(parser.MethodName, "sample");
-            Assert.IsEqualTo(parser.Parameters[0], "eW91IGNhbid0IHJlYWQgdGhpcyE=");
-            Assert.IsEqualTo(parser.Parameters[1], 3);
-            Assert.IsEqualTo(parser.Parameters[2], -7);
-            Assert.IsEqualTo(parser.Parameters[3], 1234567890L);
-            Assert.IsEqualTo(parser.Parameters[4], true);
-            Assert.IsEqualTo(parser.Parameters[5], false);
-            Assert.IsEqualTo(parser.Parameters[6], "hello xmlrpc");
-            Assert.IsEqualTo(parser.Parameters[7], -3.145D);
-            Assert.IsEqualTo(parser.Parameters[8], new DateTime(1998, 7, 17, 14, 8, 55));
-            Assert.IsSequenceEqualTo((Byte[])parser.Parameters[9], Convert.FromBase64String("eW91IGNhbid0IHJlYWQgdGhpcyE="));
+            Assert.IsEqualTo(request.MethodName, "sample");
+            Assert.IsEqualTo(request.Parameters[0], "eW91IGNhbid0IHJlYWQgdGhpcyE=");
+            Assert.IsEqualTo(request.Parameters[1], 3);
+            Assert.IsEqualTo(request.Parameters[2], -7);
+            Assert.IsEqualTo(request.Parameters[3], 1234567890L);
+            Assert.IsEqualTo(request.Parameters[4], true);
+            Assert.IsEqualTo(request.Parameters[5], false);
+            Assert.IsEqualTo(request.Parameters[6], "hello xmlrpc");
+            Assert.IsEqualTo(request.Parameters[7], -3.145D);
+            Assert.IsEqualTo(request.Parameters[8], new DateTime(1998, 7, 17, 14, 8, 55));
+            Assert.IsSequenceEqualTo((Byte[])request.Parameters[9], Convert.FromBase64String("eW91IGNhbid0IHJlYWQgdGhpcyE="));
 
-            Object[] array = (Object[])parser.Parameters[10];
+            Object[] array = (Object[])request.Parameters[10];
             Assert.IsEqualTo(array[0], 12);
             Assert.IsEqualTo(array[1], "Egypt");
             Assert.IsEqualTo(array[2], false);
             Assert.IsEqualTo(array[3], -31);
 
-            IDictionary<String, Object> map = (IDictionary<String, Object>)parser.Parameters[11];
+            IDictionary<String, Object> map = (IDictionary<String, Object>)request.Parameters[11];
             Assert.IsEqualTo(map["lowerBound"], 18);
             Assert.IsEqualTo(map["upperBound"], 139);
-            //Assert.IsEqualTo(parser.Parameters[10],);
+            //Assert.IsEqualTo(request.Parameters[10],);
         }
 
-        private static XmlRpcRequestParser Parse(String xmlrpcRequest)
+        public void ParseXmlRpcResponse()
+        {
+            String xmlrpc = @"
+<methodResponse>
+   <params>
+      <param>
+         <value><string>South Dakota</string></value>
+         </param>
+      </params>
+   </methodResponse>";
+
+            XmlTextReader reader = new XmlTextReader(new MemoryStream(Encoding.UTF8.GetBytes(xmlrpc)));
+            XmlRpcResponseSerializer serializer = new XmlRpcResponseSerializer();
+            IXmlRpcResponse request = serializer.ReadResponse(reader, null, new TypeSerializerFactory());
+            Assert.IsNull(request.Fault);
+            Assert.IsEqualTo(request.Result, "South Dakota");
+        }
+
+        public void ParseXmlRpcFaultResponse()
+        {
+            String xmlrpc = @"
+<methodResponse>
+   <fault>
+      <value>
+         <struct>
+            <member>
+               <name>faultCode</name>
+               <value><int>4</int></value>
+               </member>
+            <member>
+               <name>faultString</name>
+               <value><string>Too many parameters.</string></value>
+               </member>
+            </struct>
+         </value>
+      </fault>
+   </methodResponse>
+";
+
+            XmlTextReader reader = new XmlTextReader(new MemoryStream(Encoding.UTF8.GetBytes(xmlrpc)));
+            XmlRpcResponseSerializer serializer = new XmlRpcResponseSerializer();
+            IXmlRpcResponse request = serializer.ReadResponse(reader, null, new TypeSerializerFactory());
+            Assert.IsNull(request.Result);
+            Assert.IsNotNull(request.Fault);
+            Assert.IsEqualTo(request.Fault.FaultCode, 4);
+            Assert.IsEqualTo(request.Fault.FaultString, "Too many parameters.");
+        }
+
+        public void WriteXmlRpcResponse()
+        {
+            XmlRpcResponse response = new XmlRpcResponse("South Dakota");
+            StringBuilder sb = new StringBuilder();
+            XmlTextWriter writer = new XmlTextWriter(new StringWriter(sb));
+            XmlRpcResponseSerializer serializer = new XmlRpcResponseSerializer();
+            serializer.WriteResponse(writer, response, null, new TypeSerializerFactory());
+            Assert.IsEqualTo(sb.ToString(), @"<?xml version=""1.0"" encoding=""utf-16""?><methodResponse><params><param><value><string>South Dakota</string></value></param></params></methodResponse>");
+        }
+
+        public void WriteXmlRpcFaultResponse()
+        {
+            XmlRpcResponse response = new XmlRpcResponse(null);
+            response.Fault = new XmlRpcFault(4, "Too many parameters.");
+            StringBuilder sb = new StringBuilder();
+            XmlTextWriter writer = new XmlTextWriter(new StringWriter(sb));
+            XmlRpcResponseSerializer serializer = new XmlRpcResponseSerializer();
+            serializer.WriteResponse(writer, response, null, new TypeSerializerFactory());
+            Assert.IsEqualTo(sb.ToString(), @"<?xml version=""1.0"" encoding=""utf-16""?><methodResponse><fault><value><struct><member><name>faultCode</name><value><i4>4</i4></value></member><member><name>faultString</name><value><string>Too many parameters.</string></value></member></struct></value></fault></methodResponse>");
+        }
+
+        public void WriteXmlRpcRequest()
+        {
+            XmlRpcRequest request = new XmlRpcRequest("examples.getStateName", new Object[] { 41, "32" });
+            StringBuilder sb = new StringBuilder();
+            XmlTextWriter writer = new XmlTextWriter(new StringWriter(sb));
+            XmlRpcRequestSerializer serializer = new XmlRpcRequestSerializer();
+            serializer.WriteRequest(writer, request, null, new TypeSerializerFactory());//.WriteRequest(writer, request, null, new TypeSerializerFactory());
+            Assert.IsEqualTo(sb.ToString(), @"<?xml version=""1.0"" encoding=""utf-16""?><methodCall><methodName>examples.getStateName</methodName><params><param><value><i4>41</i4></value></param><param><value><string>32</string></value></param></params></methodCall>");
+        }
+
+        private static IXmlRpcRequest Parse(String xmlrpcRequest)
         {
             XmlTextReader reader = new XmlTextReader(new MemoryStream(Encoding.UTF8.GetBytes(xmlrpcRequest)));
-            return new XmlRpcRequestParser(null, new TypeFactory(), reader);
+            XmlRpcRequestSerializer parser = new XmlRpcRequestSerializer();
+            return parser.ReadRequest(reader, null, new TypeSerializerFactory());
         }
     }
 }
