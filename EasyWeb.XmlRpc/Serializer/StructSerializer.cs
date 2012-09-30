@@ -1,5 +1,5 @@
 ﻿//
-// LX.EasyWeb.XmlRpc.Parser.StructParser.cs
+// LX.EasyWeb.XmlRpc.Serializer.StructSerializer.cs
 //
 // Authors:
 //	Longshine He <longshinehe@users.sourceforge.net>
@@ -11,14 +11,15 @@
 //
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 
-namespace LX.EasyWeb.XmlRpc.Parser
+namespace LX.EasyWeb.XmlRpc.Serializer
 {
-    class StructParser : RecursiveTypeParser
+    class StructSerializer : RecursiveTypeSerializer
     {
-        protected override Object DoReadResult(XmlReader reader, IXmlRpcStreamConfig config, ITypeFactory typeFactory)
+        protected override Object DoRead(XmlReader reader, IXmlRpcStreamConfig config, ITypeSerializerFactory typeSerializerFactory)
         {
             IDictionary<String, Object> dic = new Dictionary<String, Object>();
 
@@ -28,14 +29,14 @@ namespace LX.EasyWeb.XmlRpc.Parser
                 if (reader.NodeType == XmlNodeType.Element)
                 {
                     if (!String.IsNullOrEmpty(reader.NamespaceURI) || !XmlRpcSpec.MEMBER_TAG.Equals(reader.LocalName))
-                        ThrowHelper.ThrowUnexpectedTag(XmlRpcSpec.MEMBER_TAG, reader);
+                        ThrowUnexpectedTag(XmlRpcSpec.MEMBER_TAG, reader);
                     do
                     {
                         reader.Read();
                         if (reader.NodeType == XmlNodeType.Element)
                         {
                             if (!String.IsNullOrEmpty(reader.NamespaceURI) || !XmlRpcSpec.MEMBER_NAME_TAG.Equals(reader.LocalName))
-                                ThrowHelper.ThrowUnexpectedTag(XmlRpcSpec.MEMBER_NAME_TAG, reader);
+                                ThrowUnexpectedTag(XmlRpcSpec.MEMBER_NAME_TAG, reader);
 
                             String name = reader.ReadElementContentAsString();
                             if (name == null)
@@ -47,7 +48,7 @@ namespace LX.EasyWeb.XmlRpc.Parser
                             if (dic.ContainsKey(name))
                                 throw new XmlException("Duplicate struct member name: " + name);
 
-                            Object value = ReadValue(reader, config, typeFactory);
+                            Object value = ReadValue(reader, config, typeSerializerFactory);
                             dic.Add(name, value);
                         }
                     } while (reader.NodeType != XmlNodeType.EndElement || !XmlRpcSpec.MEMBER_TAG.Equals(reader.LocalName));
@@ -55,6 +56,31 @@ namespace LX.EasyWeb.XmlRpc.Parser
             } while (reader.NodeType != XmlNodeType.EndElement || !XmlRpcSpec.STRUCT_TAG.Equals(reader.LocalName));
 
             return dic;
+        }
+
+        protected override void DoWrite(XmlWriter writer, Object obj, IXmlRpcStreamConfig config, ITypeSerializerFactory typeSerializerFactory, IList nestedObjs)
+        {
+            writer.WriteStartElement(XmlRpcSpec.VALUE_TAG);
+            writer.WriteStartElement(XmlRpcSpec.STRUCT_TAG);
+
+            foreach (DictionaryEntry entry in (IDictionary)obj)
+            {
+                writer.WriteStartElement(XmlRpcSpec.MEMBER_TAG);
+
+                writer.WriteStartElement(XmlRpcSpec.MEMBER_NAME_TAG);
+                if (config.EnabledForExtensions && !(entry.Key is String))
+                    WriteValue(writer, entry.Key, config, typeSerializerFactory, nestedObjs);
+                else
+                    writer.WriteString(entry.Key.ToString());
+                writer.WriteEndElement();
+
+                WriteValue(writer, entry.Value, config, typeSerializerFactory, nestedObjs);
+
+                writer.WriteEndElement();
+            }
+
+            writer.WriteEndElement();
+            writer.WriteEndElement();
         }
     }
 }

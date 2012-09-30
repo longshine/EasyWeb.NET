@@ -1,5 +1,5 @@
 ﻿//
-// LX.EasyWeb.XmlRpc.Parser.DateTime8601Parser.cs
+// LX.EasyWeb.XmlRpc.Serializer.DateTime8601Serializer.cs
 //
 // Authors:
 //	Longshine He <longshinehe@users.sourceforge.net>
@@ -13,10 +13,11 @@
 using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Xml;
 
-namespace LX.EasyWeb.XmlRpc.Parser
+namespace LX.EasyWeb.XmlRpc.Serializer
 {
-    class DateTime8601Parser : AtomicParser
+    class DateTime8601Serializer : StringSerializer
     {
         static Regex dateTime8601Regex =
             new Regex(@"(((?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2}))|((?<year>\d{4})(?<month>\d{2})(?<day>\d{2})))"
@@ -24,14 +25,18 @@ namespace LX.EasyWeb.XmlRpc.Parser
             + @"(((?<hour>\d{2}):(?<minute>\d{2}):(?<second>\d{2}))|((?<hour>\d{2})(?<minute>\d{2})(?<second>\d{2})))"
             + @"(?<tz>$|Z|([+-]\d{2}:?(\d{2})?))");
 
-        protected override Object Parse(String s)
+        protected override Object DoRead(XmlReader reader)
         {
+            String s = (String)base.DoRead(reader);
             DateTime result;
             if (!TryParseDateTime8601(s, out result))
-            {
                 result = DateTime.MinValue;
-            }
             return result;
+        }
+
+        protected override String GetTag(IXmlRpcStreamConfig config)
+        {
+            return XmlRpcSpec.DATETIME_ISO8601_TAG;
         }
 
         private static Boolean TryParseDateTime8601(String date, out DateTime result)
