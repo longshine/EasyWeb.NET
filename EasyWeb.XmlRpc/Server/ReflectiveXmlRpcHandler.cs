@@ -3,27 +3,34 @@ using System.Reflection;
 
 namespace LX.EasyWeb.XmlRpc.Server
 {
-    class ReflectiveXmlRpcHandler : IOverloadXmlRpcHandler
+    class ReflectiveXmlRpcHandler : IXmlRpcHandler
     {
         private AbstractReflectiveHandlerMapping _mapping;
-        private readonly XmlRpcHandler[] _methods;
+        private readonly XmlRpcMethod[] _methods;
         private Type _type;
+        private IXmlRpcTargetProvider _targetProvider;
 
         public ReflectiveXmlRpcHandler(AbstractReflectiveHandlerMapping mapping, ITypeConverterFactory typeConverterFactory, Type type, IXmlRpcTargetProvider provider, MethodInfo[] methods)
         {
             _mapping = mapping;
             _type = type;
-            _methods = new XmlRpcHandler[methods.Length];
+            _methods = new XmlRpcMethod[methods.Length];
             for (Int32 i = 0; i < methods.Length; i++)
             {
-                _methods[i] = new XmlRpcHandler(_type, methods[i], typeConverterFactory, provider);
+                _methods[i] = new XmlRpcMethod(methods[i], typeConverterFactory);
             }
-            TargetProvider = provider;
+            _targetProvider = provider;
         }
 
-        public IXmlRpcTargetProvider TargetProvider { get; set; }
+        public Object Execute(IXmlRpcRequest request)
+        {
+            if (_mapping.AuthenticationHandler != null && !_mapping.AuthenticationHandler.IsAuthorized(request))
+                throw new XmlRpcException("Not authorized");
+            XmlRpcMethod method = GetMethod(request.Parameters);
+            return method.Method.Invoke(_targetProvider == null ? request.Target : _targetProvider.GetTarget(request), request.Parameters);
+        }
 
-        public IXmlRpcHandler GetHandler(String name, Object[] args)
+        private XmlRpcMethod GetMethod(Object[] args)
         {
             foreach (var m in _methods)
             {
@@ -51,12 +58,21 @@ namespace LX.EasyWeb.XmlRpc.Server
             throw new XmlRpcException("No method matching arguments: " + Util.GetSignature(args));
         }
 
-        public Object Execute(IXmlRpcRequest request)
+        class XmlRpcMethod
         {
-            if (_mapping.AuthenticationHandler != null && !_mapping.AuthenticationHandler.IsAuthorized(request))
-                throw new XmlRpcException("Not authorized");
-            IXmlRpcHandler handler = GetHandler(null, request.Parameters);
-            return handler.Execute(request);
+            public MethodInfo Method;
+            public ITypeConverter[] TypeConverters;
+
+            public XmlRpcMethod(MethodInfo mi, ITypeConverterFactory typeConverterFactory)
+            {
+                Method = mi;
+                ParameterInfo[] pis = mi.GetParameters();
+                TypeConverters = new ITypeConverter[pis.Length];
+                for (Int32 i = 0; i < pis.Length; i++)
+                {
+                    TypeConverters[i] = typeConverterFactory.GetTypeConverter(pis[i].ParameterType);
+                }
+            }
         }
     }
 

@@ -1,17 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Collections;
 using System.Text;
 
 namespace LX.EasyWeb.XmlRpc.Server
 {
-    interface IAuthenticationHandler
-    {
-        Boolean IsAuthorized(IXmlRpcRequest pRequest);
-    }
-
-    class AbstractReflectiveHandlerMapping : IXmlRpcListableHandlerMapping
+    abstract class AbstractReflectiveHandlerMapping : IXmlRpcListableHandlerMapping
     {
         private IDictionary<String, IXmlRpcHandler> _handlers = new Dictionary<String, IXmlRpcHandler>();
 
@@ -34,12 +29,6 @@ namespace LX.EasyWeb.XmlRpc.Server
                 return _handlers[name];
             else
                 throw new XmlRpcException("No such handler: " + name);
-        }
-
-        public IXmlRpcHandler GetHandler(String name, Object[] args)
-        {
-            IOverloadXmlRpcHandler handler = (IOverloadXmlRpcHandler)GetHandler(name);
-            return handler.GetHandler(name, args);
         }
 
         public String[] GetListMethods()
@@ -165,6 +154,11 @@ namespace LX.EasyWeb.XmlRpc.Server
             if (mi.DeclaringType == typeof(Object))
                 return false;
             return true;
+        }
+
+        public interface IAuthenticationHandler
+        {
+            Boolean IsAuthorized(IXmlRpcRequest pRequest);
         }
     }
 
