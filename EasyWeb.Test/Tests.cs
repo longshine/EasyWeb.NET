@@ -59,6 +59,18 @@ namespace LX.EasyWeb.Test
             Assert.IsEqualTo(request.MethodName, "sample");
         }
 
+        [ActiveTest]
+        public void ParseEmptyParams()
+        {
+            String xmlrpcRequest = @"<methodCall>
+  <methodName>sample</methodName>
+  <params/>
+</methodCall>";
+
+            IXmlRpcRequest request = Parse(xmlrpcRequest);
+            Assert.IsEqualTo(request.MethodName, "sample");
+        }
+
         public void ParseEmptyValue()
         {
             String xmlrpcRequest = @"<methodCall>

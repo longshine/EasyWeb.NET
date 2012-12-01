@@ -63,7 +63,7 @@ namespace LX.EasyWeb.XmlRpc.Serializer
                 {
                     args.Add(ReadParam(reader, config, typeSerializerFactory));
                 }
-            } while (reader.NodeType != XmlNodeType.EndElement || !XmlRpcSpec.PARAMS_TAG.Equals(reader.LocalName));
+            } while (!reader.EOF && (reader.NodeType != XmlNodeType.EndElement || !XmlRpcSpec.PARAMS_TAG.Equals(reader.LocalName)));
             return args;
         }
 
