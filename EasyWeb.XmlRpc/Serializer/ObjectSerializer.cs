@@ -51,20 +51,29 @@ namespace LX.EasyWeb.XmlRpc.Serializer
             if (Attribute.IsDefined(mi, typeof(XmlRpcIgnoreAttribute)))
                 return;
 
-            XmlRpcMemberAttribute ma = (XmlRpcMemberAttribute)Attribute.GetCustomAttribute(mi, typeof(XmlRpcMemberAttribute));
-            String memberName = (ma != null && !String.IsNullOrEmpty(ma.Name)) ? ma.Name : mi.Name;
-
-            writer.WriteStartElement(XmlRpcSpec.MEMBER_TAG);
-
-            writer.WriteElementString(XmlRpcSpec.MEMBER_NAME_TAG, memberName);
-
             Object value = null;
             if (mi is PropertyInfo)
                 value = ((PropertyInfo)mi).GetValue(obj, null);
             else if (mi is FieldInfo)
                 value = ((FieldInfo)mi).GetValue(obj);
-            WriteValue(writer, value, config, typeSerializerFactory, nestedObjs);
 
+            MissingMemberAction action = config.MissingMemberAction;
+            // TODO check member attribute
+
+            XmlRpcMemberAttribute ma = (XmlRpcMemberAttribute)Attribute.GetCustomAttribute(mi, typeof(XmlRpcMemberAttribute));
+            String memberName = (ma != null && !String.IsNullOrEmpty(ma.Name)) ? ma.Name : mi.Name;
+
+            if (value == null)
+            {
+                if (action == MissingMemberAction.Ignore)
+                    return;
+                else if (action == MissingMemberAction.Error)
+                    throw new XmlRpcException("Missing non-optional member: " + memberName);
+            }
+
+            writer.WriteStartElement(XmlRpcSpec.MEMBER_TAG);
+            writer.WriteElementString(XmlRpcSpec.MEMBER_NAME_TAG, memberName);
+            WriteValue(writer, value, config, typeSerializerFactory, nestedObjs);
             writer.WriteEndElement();
         }
     }

@@ -14,7 +14,7 @@ using System;
 
 namespace LX.EasyWeb.XmlRpc
 {
-    abstract class XmlRpcConfig : IXmlRpcConfig, IXmlRpcHttpConfig
+    public abstract class XmlRpcConfig : IXmlRpcConfig, IXmlRpcHttpConfig
     {
         public Boolean EnabledForExtensions { get; set; }
 
@@ -27,5 +27,7 @@ namespace LX.EasyWeb.XmlRpc
         public Boolean UseIntTag { get; set; }
 
         public Boolean UseStringTag { get; set; }
+
+        public MissingMemberAction MissingMemberAction { get; set; }
     }
 }

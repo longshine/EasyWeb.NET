@@ -31,5 +31,6 @@ namespace LX.EasyWeb.XmlRpc
         /// Gets if the tag &lt;string&gt; is used.
         /// </summary>
         Boolean UseStringTag { get; }
+        MissingMemberAction MissingMemberAction { get; }
     }
 }

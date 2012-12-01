@@ -14,7 +14,7 @@ using System;
 
 namespace LX.EasyWeb.XmlRpc
 {
-    class XmlRpcServerConfig : XmlRpcConfig, IXmlRpcServerConfig, IXmlRpcHttpServerConfig
+    public class XmlRpcServerConfig : XmlRpcConfig, IXmlRpcServerConfig, IXmlRpcHttpServerConfig
     {
         public Boolean KeepAliveEnabled { get; set; }
 

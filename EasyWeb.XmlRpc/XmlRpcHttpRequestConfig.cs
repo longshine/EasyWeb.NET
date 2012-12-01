@@ -14,7 +14,7 @@ using System;
 
 namespace LX.EasyWeb.XmlRpc
 {
-    class XmlRpcHttpRequestConfig : XmlRpcConfig, IXmlRpcHttpRequestConfig
+    public class XmlRpcHttpRequestConfig : XmlRpcConfig, IXmlRpcHttpRequestConfig
     {
         public String BasicUserName { get; set; }
 
