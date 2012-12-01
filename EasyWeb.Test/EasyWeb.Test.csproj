@@ -45,7 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EasyWeb.XmlRpc\EasyWeb.XmlRpc.csproj">
-      <Project>{500945C8-7A60-48D0-BD99-F683938171EF}</Project>
+      <Project>{1A812520-8F8C-44D3-84AC-FCC8246093C2}</Project>
       <Name>EasyWeb.XmlRpc</Name>
     </ProjectReference>
   </ItemGroup>

@@ -6,6 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{500945C8-7A60-48D0-BD99-F683938171EF}</ProjectGuid>
+    <ProjectGuid>{1A812520-8F8C-44D3-84AC-FCC8246093C2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LX.EasyWeb.XmlRpc</RootNamespace>
@@ -42,6 +43,9 @@
     <Compile Include="IXmlRpcFault.cs" />
     <Compile Include="IXmlRpcHandler.cs" />
     <Compile Include="IXmlRpcConfig.cs" />
+    <Compile Include="IXmlRpcConfig.cs" />
+    <Compile Include="IXmlRpcFault.cs" />
+    <Compile Include="IXmlRpcHandler.cs" />
     <Compile Include="IXmlRpcHttpConfig.cs" />
     <Compile Include="IXmlRpcHttpRequestConfig.cs" />
     <Compile Include="IXmlRpcHttpServerConfig.cs" />
@@ -50,6 +54,11 @@
     <Compile Include="IXmlRpcServerConfig.cs" />
     <Compile Include="IXmlRpcStreamConfig.cs" />
     <Compile Include="IXmlRpcStreamRequestConfig.cs" />
+    <Compile Include="IXmlRpcResponse.cs" />
+    <Compile Include="IXmlRpcServerConfig.cs" />
+    <Compile Include="IXmlRpcStreamConfig.cs" />
+    <Compile Include="IXmlRpcStreamRequestConfig.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serializer\AtomicSerializer.cs" />
     <Compile Include="Serializer\Base64Serializer.cs" />
     <Compile Include="Serializer\DateTime8601Serializer.cs" />
@@ -70,6 +79,15 @@
     <Compile Include="Server\IXmlRpcHandlerMapping.cs" />
     <Compile Include="Server\ReflectiveXmlRpcHandler.cs" />
     <Compile Include="Server\XmlRpcHttpServer.cs" />
+    <Compile Include="Server\IXmlRpcHandlerMapping.cs" />
+    <Compile Include="Server\IXmlRpcListableHandlerMapping.cs" />
+    <Compile Include="Server\IXmlRpcSystemHandler.cs" />
+    <Compile Include="Server\IXmlRpcTargetProvider.cs" />
+    <Compile Include="Server\ReflectiveXmlRpcHandler.cs" />
+    <Compile Include="Server\XmlRpcHttpServer.cs" />
+    <Compile Include="Server\XmlRpcServer.cs" />
+    <Compile Include="Server\XmlRpcServerChannelSink.cs" />
+    <Compile Include="Server\XmlRpcServerFormatterSinkProvider.cs" />
     <Compile Include="Server\XmlRpcService.cs" />
     <Compile Include="Server\XmlRpcServiceHandler.cs" />
     <Compile Include="Server\XmlRpcStreamServer.cs" />
@@ -95,6 +113,9 @@
     <Compile Include="XmlRpcSpec.cs" />
     <Compile Include="Server\IXmlRpcSystemHandler.cs" />
     <Compile Include="IXmlRpcResponse.cs" />
+    <Compile Include="XmlRpcServerConfig.cs" />
+    <Compile Include="XmlRpcServiceAttribute.cs" />
+    <Compile Include="XmlRpcSpec.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
