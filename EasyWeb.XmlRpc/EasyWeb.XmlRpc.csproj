@@ -40,9 +40,6 @@
     <Compile Include="HttpHelper.cs" />
     <Compile Include="ITypeConverter.cs" />
     <Compile Include="ITypeConverterFactory.cs" />
-    <Compile Include="IXmlRpcFault.cs" />
-    <Compile Include="IXmlRpcHandler.cs" />
-    <Compile Include="IXmlRpcConfig.cs" />
     <Compile Include="IXmlRpcConfig.cs" />
     <Compile Include="IXmlRpcFault.cs" />
     <Compile Include="IXmlRpcHandler.cs" />
@@ -51,9 +48,6 @@
     <Compile Include="IXmlRpcHttpServerConfig.cs" />
     <Compile Include="IXmlRpcRequest.cs" />
     <Compile Include="IXmlRpcRequestConfig.cs" />
-    <Compile Include="IXmlRpcServerConfig.cs" />
-    <Compile Include="IXmlRpcStreamConfig.cs" />
-    <Compile Include="IXmlRpcStreamRequestConfig.cs" />
     <Compile Include="IXmlRpcResponse.cs" />
     <Compile Include="IXmlRpcServerConfig.cs" />
     <Compile Include="IXmlRpcStreamConfig.cs" />
@@ -74,11 +68,6 @@
     <Compile Include="Serializer\XmlRpcRequestSerializer.cs" />
     <Compile Include="Serializer\XmlRpcResponseSerializer.cs" />
     <Compile Include="Server\AbstractReflectiveHandlerMapping.cs" />
-    <Compile Include="Server\IXmlRpcTargetProvider.cs" />
-    <Compile Include="Server\IXmlRpcListableHandlerMapping.cs" />
-    <Compile Include="Server\IXmlRpcHandlerMapping.cs" />
-    <Compile Include="Server\ReflectiveXmlRpcHandler.cs" />
-    <Compile Include="Server\XmlRpcHttpServer.cs" />
     <Compile Include="Server\IXmlRpcHandlerMapping.cs" />
     <Compile Include="Server\IXmlRpcListableHandlerMapping.cs" />
     <Compile Include="Server\IXmlRpcSystemHandler.cs" />
@@ -104,19 +93,11 @@
     <Compile Include="XmlRpcNonStandard.cs" />
     <Compile Include="XmlRpcRequest.cs" />
     <Compile Include="XmlRpcResponse.cs" />
-    <Compile Include="Server\XmlRpcServer.cs" />
-    <Compile Include="Server\XmlRpcServerChannelSink.cs" />
-    <Compile Include="XmlRpcServerConfig.cs" />
-    <Compile Include="Server\XmlRpcServerFormatterSinkProvider.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="XmlRpcServiceAttribute.cs" />
-    <Compile Include="XmlRpcSpec.cs" />
-    <Compile Include="Server\IXmlRpcSystemHandler.cs" />
-    <Compile Include="IXmlRpcResponse.cs" />
     <Compile Include="XmlRpcServerConfig.cs" />
     <Compile Include="XmlRpcServiceAttribute.cs" />
     <Compile Include="XmlRpcSpec.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
