@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{500945C8-7A60-48D0-BD99-F683938171EF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LX.EasyWeb.XmlRpc</RootNamespace>
+    <AssemblyName>EasyWeb.XmlRpc</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="HttpHelper.cs" />
+    <Compile Include="ITypeConverter.cs" />
+    <Compile Include="ITypeConverterFactory.cs" />
+    <Compile Include="IXmlRpcFault.cs" />
+    <Compile Include="IXmlRpcHandler.cs" />
+    <Compile Include="IXmlRpcConfig.cs" />
+    <Compile Include="IXmlRpcHttpConfig.cs" />
+    <Compile Include="IXmlRpcHttpRequestConfig.cs" />
+    <Compile Include="IXmlRpcHttpServerConfig.cs" />
+    <Compile Include="IXmlRpcRequest.cs" />
+    <Compile Include="IXmlRpcRequestConfig.cs" />
+    <Compile Include="IXmlRpcServerConfig.cs" />
+    <Compile Include="IXmlRpcStreamConfig.cs" />
+    <Compile Include="IXmlRpcStreamRequestConfig.cs" />
+    <Compile Include="Serializer\AtomicSerializer.cs" />
+    <Compile Include="Serializer\Base64Serializer.cs" />
+    <Compile Include="Serializer\DateTime8601Serializer.cs" />
+    <Compile Include="Serializer\ITypeSerializer.cs" />
+    <Compile Include="Serializer\ITypeSerializerFactory.cs" />
+    <Compile Include="Serializer\IXmlWriterFactory.cs" />
+    <Compile Include="Serializer\ObjectArraySerializer.cs" />
+    <Compile Include="Serializer\ObjectSerializer.cs" />
+    <Compile Include="Serializer\RecursiveTypeSerializer.cs" />
+    <Compile Include="Serializer\StructSerializer.cs" />
+    <Compile Include="Serializer\TypeSerializer.cs" />
+    <Compile Include="Serializer\TypeSerializerFactory.cs" />
+    <Compile Include="Serializer\XmlRpcRequestSerializer.cs" />
+    <Compile Include="Serializer\XmlRpcResponseSerializer.cs" />
+    <Compile Include="Server\AbstractReflectiveHandlerMapping.cs" />
+    <Compile Include="Server\IXmlRpcTargetProvider.cs" />
+    <Compile Include="Server\IXmlRpcListableHandlerMapping.cs" />
+    <Compile Include="Server\IXmlRpcHandlerMapping.cs" />
+    <Compile Include="Server\ReflectiveXmlRpcHandler.cs" />
+    <Compile Include="Server\XmlRpcHttpServer.cs" />
+    <Compile Include="Server\XmlRpcService.cs" />
+    <Compile Include="Server\XmlRpcServiceHandler.cs" />
+    <Compile Include="Server\XmlRpcStreamServer.cs" />
+    <Compile Include="Server\XmlRpcSystemHandlers.cs" />
+    <Compile Include="TypeConverterFactory.cs" />
+    <Compile Include="XmlRpcConfig.cs" />
+    <Compile Include="XmlRpcException.cs" />
+    <Compile Include="XmlRpcFault.cs" />
+    <Compile Include="XmlRpcHttpRequestConfig.cs" />
+    <Compile Include="XmlRpcIgnoreAttribute.cs" />
+    <Compile Include="XmlRpcMemberAttribute.cs" />
+    <Compile Include="XmlRpcMethodAttribute.cs" />
+    <Compile Include="XmlRpcMissingMemberAttribute.cs" />
+    <Compile Include="XmlRpcNonStandard.cs" />
+    <Compile Include="XmlRpcRequest.cs" />
+    <Compile Include="XmlRpcResponse.cs" />
+    <Compile Include="Server\XmlRpcServer.cs" />
+    <Compile Include="Server\XmlRpcServerChannelSink.cs" />
+    <Compile Include="XmlRpcServerConfig.cs" />
+    <Compile Include="Server\XmlRpcServerFormatterSinkProvider.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XmlRpcServiceAttribute.cs" />
+    <Compile Include="XmlRpcSpec.cs" />
+    <Compile Include="Server\IXmlRpcSystemHandler.cs" />
+    <Compile Include="IXmlRpcResponse.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
