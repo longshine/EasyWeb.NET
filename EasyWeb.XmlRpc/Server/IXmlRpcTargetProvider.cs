@@ -19,7 +19,7 @@ namespace LX.EasyWeb.XmlRpc.Server
         Object GetTarget(IXmlRpcRequest request);
     }
 
-    interface IXmlRpcTargetProviderFactory
+    public interface IXmlRpcTargetProviderFactory
     {
         IXmlRpcTargetProvider GetTargetProvider(Type type);
     }

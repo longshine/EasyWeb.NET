@@ -17,17 +17,12 @@ using System.Text;
 
 namespace LX.EasyWeb.XmlRpc
 {
-    static class HttpHelper
+    public static class HttpHelper
     {
         public const String ContentLengthHeader = "Content-Length";
         public const String ContentEncodingHeader = "Content-Encoding";
         public const String AcceptEncodingHeader = "Accept-Encoding";
         public const String AuthorizationHeader = "Authorization";
-
-        public static String GetRequestUri(ITransportHeaders requestHeaders)
-        {
-            return (String)requestHeaders["__RequestUri"];
-        }
 
         public static String GetContentLength(ITransportHeaders requestHeaders)
         {

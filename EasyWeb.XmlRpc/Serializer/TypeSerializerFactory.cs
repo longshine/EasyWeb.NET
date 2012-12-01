@@ -92,6 +92,8 @@ namespace LX.EasyWeb.XmlRpc.Serializer
                 return arraySerializer;
             else if (obj is IDictionary)
                 return structSerializer;
+            else if (obj is Enum)
+                return stringSerializer;
             else
                 return objectSerializer;
         }

@@ -29,7 +29,7 @@ namespace LX.EasyWeb.XmlRpc.Server
             TypeConverterFactory = new TypeConverterFactory();
 
             XmlRpcServerConfig config = new XmlRpcServerConfig();
-            config.EnabledForExtensions = true;
+            //config.EnabledForExtensions = true;
             Config = config;
         }
 

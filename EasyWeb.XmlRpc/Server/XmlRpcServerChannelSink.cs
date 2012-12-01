@@ -23,12 +23,13 @@ namespace LX.EasyWeb.XmlRpc.Server
 {
     public class XmlRpcServerChannelSink : IServerChannelSink
     {
-        private XmlRpcServerConfig _config = new XmlRpcServerConfig();
         private TypeReflectiveHandlerMapping _mapping = new TypeReflectiveHandlerMapping();
 
         public XmlRpcServerChannelSink(IServerChannelSink next)
         {
             NextChannelSink = next;
+            Config = new XmlRpcServerConfig();
+            TypeSerializerFactory = new TypeSerializerFactory();
         }
 
         public IXmlRpcServerConfig Config { get; set; }
@@ -88,6 +89,7 @@ namespace LX.EasyWeb.XmlRpc.Server
                 faultResponse.Fault = new XmlRpcFault(0, ex.Message);
                 serializer.WriteResponse(responseStream, faultResponse, requestConfig, TypeSerializerFactory);
                 responseHeaders = new TransportHeaders();
+                responseHeaders["Content-Type"] = "text/xml; charset=\"utf-8\"";
             }
 
             return ServerProcessing.Complete;
@@ -97,6 +99,8 @@ namespace LX.EasyWeb.XmlRpc.Server
         {
             String requestUri = GetRequestUri(requestHeaders);
             Type svcType = GetServerTypeForUri(requestUri);
+            if (!_mapping.Has(svcType))
+                _mapping.Register(svcType);
             IXmlRpcRequest request = GetRequest(config, requestStream);
             IXmlRpcHandler handler = GetHandler(request);
             Header[] headers = GetChannelHeaders(requestUri, request, handler, svcType);

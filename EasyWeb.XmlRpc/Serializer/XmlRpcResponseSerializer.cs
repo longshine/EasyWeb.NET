@@ -65,10 +65,9 @@ namespace LX.EasyWeb.XmlRpc.Serializer
         /// <exception cref="System.Xml.XmlException">failed writing the response XML</exception>
         public void WriteResponse(Stream responseStream, IXmlRpcResponse response, IXmlRpcStreamRequestConfig config, ITypeSerializerFactory typeSerializerFactory)
         {
-            using (XmlWriter writer = _xmlWriterFactory.GetXmlWriter(config, responseStream))
-            {
-                WriteResponse(writer, response, config, typeSerializerFactory);
-            }
+            XmlWriter writer = _xmlWriterFactory.GetXmlWriter(config, responseStream);
+            WriteResponse(writer, response, config, typeSerializerFactory);
+            writer.Flush();
         }
 
         /// <summary>

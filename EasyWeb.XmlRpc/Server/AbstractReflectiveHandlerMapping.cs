@@ -18,13 +18,14 @@ using System.Text;
 
 namespace LX.EasyWeb.XmlRpc.Server
 {
-    abstract class AbstractReflectiveHandlerMapping : IXmlRpcListableHandlerMapping
+    public abstract class AbstractReflectiveHandlerMapping : IXmlRpcListableHandlerMapping
     {
         private IDictionary<String, IXmlRpcHandler> _handlers = new Dictionary<String, IXmlRpcHandler>();
 
         public AbstractReflectiveHandlerMapping()
         {
             TypeConverterFactory = new TypeConverterFactory();
+            //TargetProviderFactory = new StatelessTargetProviderFactory();
         }
 
         public IAuthenticationHandler AuthenticationHandler { get; set; }
@@ -140,6 +141,8 @@ namespace LX.EasyWeb.XmlRpc.Server
                             return false;
                     }
                 }
+                else
+                    return false;
             }
             return true;
         }
@@ -174,11 +177,19 @@ namespace LX.EasyWeb.XmlRpc.Server
         }
     }
 
-    class TypeReflectiveHandlerMapping : AbstractReflectiveHandlerMapping
+    public class TypeReflectiveHandlerMapping : AbstractReflectiveHandlerMapping
     {
+        private List<Type> _types = new List<Type>();
+
         public void Register(Type type)
         {
+            _types.Add(type);
             RegisterPublicMethods(null, type);
+        }
+
+        public Boolean Has(Type type)
+        {
+            return _types.Contains(type);
         }
     }
 
@@ -294,7 +305,7 @@ namespace LX.EasyWeb.XmlRpc.Server
             else if (type == typeof(Byte[]))
                 return "base64";
             else
-                return null;
+                return "struct";
         }
 
         public static String GetSignature(Object[] args)

@@ -29,7 +29,7 @@ namespace LX.EasyWeb.XmlRpc.Server
 
         public void GetChannelData(IChannelDataStore channelData)
         {
-            throw new NotImplementedException();
+            // TODO: not required???
         }
     }
 }

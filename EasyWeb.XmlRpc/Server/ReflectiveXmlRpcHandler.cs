@@ -40,7 +40,10 @@ namespace LX.EasyWeb.XmlRpc.Server
                 throw new XmlRpcException("Not authorized");
             XmlRpcMethod method = GetMethod(request.Parameters);
             ConvertParams(method.TypeConverters, request.Parameters);
-            return Invoke(method.Method, _targetProvider == null ? request.Target : _targetProvider.GetTarget(request), request.Parameters);
+            //return Invoke(method.Method, _targetProvider == null ? request.Target : _targetProvider.GetTarget(request), request.Parameters);
+            if (request.Target == null && _targetProvider != null)
+                request.Target = _targetProvider.GetTarget(request);
+            return Invoke(method.Method, request.Target, request.Parameters);
         }
 
         public MethodInfo GetMethod(IXmlRpcRequest request)

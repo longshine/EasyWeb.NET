@@ -17,7 +17,7 @@ namespace LX.EasyWeb.XmlRpc.Server
     /// <summary>
     /// Provides methods that implements the XML-RPC introspection.
     /// </summary>
-    public abstract class XmlRpcSystemHandlers : IXmlRpcSystemHandler
+    public abstract class XmlRpcSystemHandlers : MarshalByRefObject, IXmlRpcSystemHandler
     {
         /// <summary>
         /// This method implements the introspection method <code>system.listMethods</code>.
