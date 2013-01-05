@@ -88,10 +88,10 @@ namespace LX.EasyWeb.XmlRpc.Serializer
                 return dateTimeSerializer;
             else if (obj is Byte[])
                 return base64Serializer;
-            else if (obj is IEnumerable)
-                return arraySerializer;
             else if (obj is IDictionary)
                 return structSerializer;
+            else if (obj is IEnumerable)
+                return arraySerializer;
             else if (obj is Enum)
                 return stringSerializer;
             else
