@@ -17,10 +17,7 @@ namespace LX.EasyWeb.XmlRpc
 #if (!COMPACT_FRAMEWORK)
     [Serializable]
 #endif
-#if DEBUG
-    public
-#endif
-    class XmlRpcFault : IXmlRpcFault
+    public class XmlRpcFault : IXmlRpcFault
     {
         private Int32 _faultCode;
         private String _faultString;

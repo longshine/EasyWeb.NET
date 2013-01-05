@@ -14,10 +14,7 @@ using System;
 
 namespace LX.EasyWeb.XmlRpc
 {
-#if DEBUG
-    public
-#endif
-    class XmlRpcResponse : IXmlRpcResponse
+    public class XmlRpcResponse : IXmlRpcResponse
     {
         public XmlRpcResponse()
         { }
