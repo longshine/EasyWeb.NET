@@ -77,7 +77,12 @@ namespace LX.EasyWeb.XmlRpc.Serializer
             else if (obj is Int32)
                 return i4Serializer;
             else if (obj is Int64)
-                return i8Serializer;
+            {
+                if (config.EnabledForExtensions)
+                    return i8Serializer;
+                else
+                    return stringSerializer;
+            }
             else if (obj is Boolean)
                 return boolSerializer;
             else if (obj is Double)

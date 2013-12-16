@@ -33,6 +33,8 @@ namespace LX.EasyWeb.XmlRpc.Serializer
                 reader.Read();
                 if (reader.NodeType == XmlNodeType.Element)
                 {
+                    if (reader.IsEmptyElement)
+                        continue;
                     ITypeSerializer parser = typeFactory.GetSerializer(config, reader.NamespaceURI, reader.LocalName);
                     if (parser == null)
                         throw new XmlException("Unknown type: " + new XmlQualifiedName(reader.LocalName, reader.NamespaceURI));

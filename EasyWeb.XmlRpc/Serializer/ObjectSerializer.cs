@@ -31,12 +31,12 @@ namespace LX.EasyWeb.XmlRpc.Serializer
 
             Type type = obj.GetType();
 
-            foreach (PropertyInfo pi in type.GetProperties())
+            foreach (PropertyInfo pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
             {
                 WriteMember(writer, obj, pi, config, typeSerializerFactory, nestedObjs);
             }
 
-            foreach (FieldInfo fi in type.GetFields())
+            foreach (FieldInfo fi in type.GetFields(BindingFlags.Instance | BindingFlags.Public))
             {
                 WriteMember(writer, obj, fi, config, typeSerializerFactory, nestedObjs);
             }

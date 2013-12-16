@@ -39,6 +39,11 @@ namespace LX.EasyWeb.XmlRpc.Serializer
             return XmlRpcSpec.DATETIME_ISO8601_TAG;
         }
 
+        protected override String GetString(Object obj)
+        {
+            return ((DateTime)obj).ToString("yyyyMMdd'T'HH':'mm':'ss");
+        }
+
         private static Boolean TryParseDateTime8601(String date, out DateTime result)
         {
             result = DateTime.MinValue;
