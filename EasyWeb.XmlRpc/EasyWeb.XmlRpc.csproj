@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HttpHelper.cs" />
+    <Compile Include="IServerStream.cs" />
     <Compile Include="ITypeConverter.cs" />
     <Compile Include="ITypeConverterFactory.cs" />
     <Compile Include="IXmlRpcConfig.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="IXmlRpcServerConfig.cs" />
     <Compile Include="IXmlRpcStreamConfig.cs" />
     <Compile Include="IXmlRpcStreamRequestConfig.cs" />
+    <Compile Include="IXmlRpcStreamRequestProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serializer\AtomicSerializer.cs" />
     <Compile Include="Serializer\Base64Serializer.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="Server\AbstractReflectiveHandlerMapping.cs" />
     <Compile Include="Server\IXmlRpcHandlerMapping.cs" />
     <Compile Include="Server\IXmlRpcListableHandlerMapping.cs" />
+    <Compile Include="IXmlRpcRequestProcessor.cs" />
     <Compile Include="Server\IXmlRpcSystemHandler.cs" />
     <Compile Include="Server\IXmlRpcTargetProvider.cs" />
     <Compile Include="Server\ReflectiveXmlRpcHandler.cs" />

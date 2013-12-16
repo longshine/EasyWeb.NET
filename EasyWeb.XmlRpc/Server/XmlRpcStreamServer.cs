@@ -21,7 +21,7 @@ namespace LX.EasyWeb.XmlRpc.Server
     /// <summary>
     /// Subclass of <see cref="LX.EasyWeb.XmlRpc.Server.XmlRpcServer"/> with support for reading requests from and writing responses to streams.
     /// </summary>
-    public abstract class XmlRpcStreamServer : XmlRpcServer
+    public abstract class XmlRpcStreamServer : XmlRpcServer, IXmlRpcStreamRequestProcessor
     {
         private IXmlWriterFactory _xmlWriterFactory;
 
@@ -39,7 +39,7 @@ namespace LX.EasyWeb.XmlRpc.Server
         /// </summary>
         /// <param name="config"></param>
         /// <param name="serverStream">the <see cref="LX.EasyWeb.XmlRpc.Server.XmlRpcStreamServer+ServerStream"/> to process</param>
-        public void Execute(IXmlRpcStreamRequestConfig config, ServerStream serverStream)
+        public void Execute(IXmlRpcStreamRequestConfig config, IServerStream serverStream)
         {
             Stream inputStream;
             XmlRpcResponse response = new XmlRpcResponse();
@@ -66,7 +66,7 @@ namespace LX.EasyWeb.XmlRpc.Server
         /// <summary>
         /// Gets input stream.
         /// </summary>
-        protected virtual Stream GetInputStream(IXmlRpcStreamRequestConfig config, ServerStream serverStream)
+        protected virtual Stream GetInputStream(IXmlRpcStreamRequestConfig config, IServerStream serverStream)
         {
             Stream inputStream = serverStream.InputStream;
             if (config.EnabledForExtensions && config.GzipCompressing)
@@ -78,7 +78,7 @@ namespace LX.EasyWeb.XmlRpc.Server
         /// <summary>
         /// Gets output stream.
         /// </summary>
-        protected virtual Stream GetOutputStream(IXmlRpcStreamRequestConfig config, ServerStream serverStream)
+        protected virtual Stream GetOutputStream(IXmlRpcStreamRequestConfig config, IServerStream serverStream)
         {
             Stream outputStream = serverStream.OutputStream;
             if (config.EnabledForExtensions && config.GzipRequesting)
@@ -99,21 +99,6 @@ namespace LX.EasyWeb.XmlRpc.Server
         {
             XmlRpcRequestSerializer parser = new XmlRpcRequestSerializer();
             return parser.ReadRequest(new XmlTextReader(inputStream), config, TypeSerializerFactory);
-        }
-
-        /// <summary>
-        /// Represents a request stream and provides accessibility to both input and output streams.
-        /// </summary>
-        public interface ServerStream
-        {
-            /// <summary>
-            /// Gets the input stream.
-            /// </summary>
-            Stream InputStream { get; }
-            /// <summary>
-            /// Gets the output stream.
-            /// </summary>
-            Stream OutputStream { get; }
         }
     }
 }

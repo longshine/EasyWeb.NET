@@ -24,7 +24,7 @@ namespace LX.EasyWeb.XmlRpc.Server
         IXmlRpcTargetProvider GetTargetProvider(Type type);
     }
 
-    class StatefulTargetProviderFactory : IXmlRpcTargetProviderFactory
+    public class StatefulTargetProviderFactory : IXmlRpcTargetProviderFactory
     {
         public IXmlRpcTargetProvider GetTargetProvider(Type type)
         {
@@ -47,7 +47,7 @@ namespace LX.EasyWeb.XmlRpc.Server
         }
     }
 
-    class StatelessTargetProviderFactory : IXmlRpcTargetProviderFactory
+    public class StatelessTargetProviderFactory : IXmlRpcTargetProviderFactory
     {
         public IXmlRpcTargetProvider GetTargetProvider(Type type)
         {

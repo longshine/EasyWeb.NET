@@ -37,7 +37,7 @@ namespace LX.EasyWeb.XmlRpc.Server
         /// <summary>
         /// Gets output stream.
         /// </summary>
-        protected override Stream GetOutputStream(IXmlRpcStreamRequestConfig config, ServerStream serverStream)
+        protected override Stream GetOutputStream(IXmlRpcStreamRequestConfig config, IServerStream serverStream)
         {
             if (config.EnabledForExtensions && config.GzipRequesting)
                 SetResponseHeader(serverStream, HttpHelper.ContentEncodingHeader, "gzip");
@@ -87,12 +87,12 @@ namespace LX.EasyWeb.XmlRpc.Server
             return rc;
         }
 
-        private void SetResponseHeader(ServerStream serverStream, String header, String value)
+        private void SetResponseHeader(IServerStream serverStream, String header, String value)
         {
             ((HttpStream)serverStream).Response.AppendHeader(header, value);
         }
 
-        class HttpStream : ServerStream
+        class HttpStream : IServerStream
         {
             public HttpStream(HttpRequest request, HttpResponse response)
             {

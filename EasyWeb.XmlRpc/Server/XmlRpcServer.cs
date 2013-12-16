@@ -18,7 +18,7 @@ namespace LX.EasyWeb.XmlRpc.Server
     /// <summary>
     /// XML-RPC server.
     /// </summary>
-    public abstract class XmlRpcServer : XmlRpcSystemHandlers
+    public abstract class XmlRpcServer : XmlRpcSystemHandlers, IXmlRpcRequestProcessor
     {
         /// <summary>
         /// Initializes.
