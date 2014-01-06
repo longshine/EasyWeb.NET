@@ -40,8 +40,14 @@ namespace LX.EasyWeb.XmlRpc.Server
         {
             if (_handlers.ContainsKey(name))
                 return _handlers[name];
-            else
-                throw new XmlRpcException("No such handler: " + name);
+            else if (name.IndexOf('.') >= 0)
+            {
+                name = name.Substring(0, name.IndexOf('.'));
+                if (_handlers.ContainsKey(name))
+                    return _handlers[name];
+            }
+            
+            throw new XmlRpcException("No such handler: " + name);
         }
 
         public String[] GetListMethods()
@@ -77,6 +83,12 @@ namespace LX.EasyWeb.XmlRpc.Server
 
             foreach (Type itf in type.GetInterfaces())
             {
+                if (itf == typeof(IXmlRpcHandler))
+                {
+                    _handlers[key] = new DefaultXmlRpcHandler(this, TargetProviderFactory == null ? null : TargetProviderFactory.GetTargetProvider(type));
+                    continue;
+                }
+                
                 foreach (MethodInfo mi in itf.GetMethods())
                 {
                     RegisterMethod(map, mi, key, type);
@@ -174,6 +186,34 @@ namespace LX.EasyWeb.XmlRpc.Server
         public interface IAuthenticationHandler
         {
             Boolean IsAuthorized(IXmlRpcRequest pRequest);
+        }
+    }
+
+    class DefaultXmlRpcHandler : IXmlRpcHandler
+    {
+        private readonly AbstractReflectiveHandlerMapping _mapping;
+        private readonly IXmlRpcTargetProvider _targetProvider;
+
+        public DefaultXmlRpcHandler(AbstractReflectiveHandlerMapping mapping, IXmlRpcTargetProvider provider)
+        {
+            _mapping = mapping;
+            _targetProvider = provider;
+        }
+
+        public Object Execute(IXmlRpcRequest request)
+        {
+            if (_mapping.AuthenticationHandler != null && !_mapping.AuthenticationHandler.IsAuthorized(request))
+                throw new XmlRpcException("Not authorized");
+
+            if (request.Target == null && _targetProvider != null)
+                request.Target = _targetProvider.GetTarget(request);
+            IXmlRpcHandler handler = (IXmlRpcHandler)request.Target;
+            return handler.Execute(request);
+        }
+
+        public MethodInfo GetMethod(IXmlRpcRequest request)
+        {
+            return null;
         }
     }
 
