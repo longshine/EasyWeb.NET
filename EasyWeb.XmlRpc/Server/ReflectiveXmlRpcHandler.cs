@@ -65,6 +65,8 @@ namespace LX.EasyWeb.XmlRpc.Server
             }
             catch (Exception ex)
             {
+                while (ex.InnerException != null)
+                    ex = ex.InnerException;
                 throw new XmlRpcException("Failed to invoke method " + methodInfo.Name + ": " + ex.Message, ex);
             }
         }

@@ -52,10 +52,10 @@ namespace LX.EasyWeb.XmlRpc
                 return objectArrayConverter;
             else if (type.IsAssignableFrom(typeof(Byte[])))
                 return byteArrayConverter;
+            else if (type.IsAssignableFrom(typeof(IList)))
+                return arrayListConverter;
             else if (type.IsAssignableFrom(typeof(Hashtable)))
                 return hashtableConverter;
-            else if (type.IsAssignableFrom(typeof(ArrayList)))
-                return arrayListConverter;
 
             throw new NotSupportedException("Invalid parameter or result type: " + type);
         }
