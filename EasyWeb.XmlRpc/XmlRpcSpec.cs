@@ -27,7 +27,6 @@ namespace LX.EasyWeb.XmlRpc
         public const String VALUE_TAG = "value";
         public const String INT_TAG = "int";
         public const String I4_TAG = "i4";
-        public const String I8_TAG = "i8";
         public const String BOOLEAN_TAG = "boolean";
         public const String STRING_TAG = "string";
         public const String DOUBLE_TAG = "double";
@@ -42,6 +41,14 @@ namespace LX.EasyWeb.XmlRpc
         public const String FAULT_TAG = "fault";
         public const String FAULT_CODE_TAG = "faultCode";
         public const String FAULT_STRING_TAG = "faultString";
+
+        public const String EXTENSIONS_URI = "http://ws.apache.org/xmlrpc/namespaces/extensions";
+        public const String EXTENSIONS_PREFIX = "ex";
+        public const String NIL_TAG = "nil";
+        public const String I1_TAG = "i1";
+        public const String I2_TAG = "i2";
+        public const String I8_TAG = "i8";
+        public const String FLOAT_TAG = "float";
 
         public static readonly Encoding DEFAULT_ENCODING = Encoding.UTF8;
     }

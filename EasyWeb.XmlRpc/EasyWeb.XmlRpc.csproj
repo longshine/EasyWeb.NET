@@ -58,6 +58,8 @@
     <Compile Include="Serializer\AtomicSerializer.cs" />
     <Compile Include="Serializer\Base64Serializer.cs" />
     <Compile Include="Serializer\DateTime8601Serializer.cs" />
+    <Compile Include="Serializer\Ext\AtomicSerializer.cs" />
+    <Compile Include="Serializer\Ext\NullSerializer.cs" />
     <Compile Include="Serializer\ITypeSerializer.cs" />
     <Compile Include="Serializer\ITypeSerializerFactory.cs" />
     <Compile Include="Serializer\IXmlWriterFactory.cs" />

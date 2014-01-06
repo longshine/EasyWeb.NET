@@ -1,19 +1,7 @@
-﻿//
-// LX.EasyWeb.XmlRpc.Serializer.AtomicSerializer.cs
-//
-// Authors:
-//	Longshine He <longshinehe@users.sourceforge.net>
-//
-// Copyright (c) 2012 Longshine He
-//
-// This code is distributed in the hope that it will be useful,
-// but WITHOUT WARRANTY OF ANY KIND.
-//
-
-using System;
+﻿using System;
 using System.Xml;
 
-namespace LX.EasyWeb.XmlRpc.Serializer
+namespace LX.EasyWeb.XmlRpc.Serializer.Ext
 {
     abstract class AtomicSerializer : TypeSerializer
     {
@@ -32,7 +20,7 @@ namespace LX.EasyWeb.XmlRpc.Serializer
         private void WriteString(XmlWriter writer, String tag, String value)
         {
             if (tag != null)
-                writer.WriteStartElement(tag);
+                writer.WriteStartElement(XmlRpcSpec.EXTENSIONS_PREFIX, tag, XmlRpcSpec.EXTENSIONS_URI);
             writer.WriteString(value);
             if (tag != null)
                 writer.WriteEndElement();
@@ -42,65 +30,76 @@ namespace LX.EasyWeb.XmlRpc.Serializer
         {
             return obj.ToString();
         }
-        
+
         protected abstract String GetTag(IXmlRpcStreamConfig config);
         protected abstract Object DoRead(XmlReader reader);
     }
 
-    class BooleanSerializer : AtomicSerializer
+    class I1Serializer : AtomicSerializer
     {
         protected override String GetTag(IXmlRpcStreamConfig config)
         {
-            return XmlRpcSpec.BOOLEAN_TAG;
-        }
-
-        protected override String GetString(Object obj)
-        {
-            return ((Boolean)obj) ? "1" : "0";
+            return XmlRpcSpec.I1_TAG;
         }
 
         protected override Object DoRead(XmlReader reader)
         {
-            return reader.ReadElementContentAsBoolean();
+            String result = reader.ReadElementContentAsString();
+            try
+            {
+                return Byte.Parse(result);
+            }
+            catch (Exception)
+            {
+                throw new XmlRpcException("Failed to parse byte value: " + result);
+            }
         }
     }
 
-    class Int32Serializer : AtomicSerializer
+    class I2Serializer : AtomicSerializer
     {
         protected override String GetTag(IXmlRpcStreamConfig config)
         {
-            return config != null && config.UseIntTag ? XmlRpcSpec.INT_TAG : XmlRpcSpec.I4_TAG; ;
+            return XmlRpcSpec.I2_TAG;
         }
 
         protected override Object DoRead(XmlReader reader)
         {
-            return reader.ReadElementContentAsInt();
+            String result = reader.ReadElementContentAsString();
+            try
+            {
+                return Int16.Parse(result);
+            }
+            catch (Exception)
+            {
+                throw new XmlRpcException("Failed to parse byte value: " + result);
+            }
         }
     }
 
-    class DoubleSerializer : AtomicSerializer
+    class I8Serializer : AtomicSerializer
     {
         protected override String GetTag(IXmlRpcStreamConfig config)
         {
-            return XmlRpcSpec.DOUBLE_TAG;
+            return XmlRpcSpec.I8_TAG;
         }
 
         protected override Object DoRead(XmlReader reader)
         {
-            return reader.ReadElementContentAsDouble();
+            return reader.ReadElementContentAsLong();
         }
     }
 
-    class StringSerializer : AtomicSerializer
+    class FloatSerializer : AtomicSerializer
     {
         protected override String GetTag(IXmlRpcStreamConfig config)
         {
-            return config == null || config.UseStringTag ? XmlRpcSpec.STRING_TAG : null;
+            return XmlRpcSpec.FLOAT_TAG;
         }
 
         protected override Object DoRead(XmlReader reader)
         {
-            return reader.NodeType == XmlNodeType.Text ? reader.ReadContentAsString() : reader.ReadElementContentAsString();
+            return reader.ReadElementContentAsFloat();
         }
     }
 }
