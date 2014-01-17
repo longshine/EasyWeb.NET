@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("EasyWeb.NET")]
-[assembly: AssemblyCopyright("Copyright © 2009 - 2012 Longshine")]
+[assembly: AssemblyCopyright("Copyright © 2009 - 2014 Longshine")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
