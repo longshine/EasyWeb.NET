@@ -39,7 +39,7 @@ namespace LX.EasyWeb.XmlRpc.Server
         public ITypeConverterFactory TypeConverterFactory { get; set; }
 
         /// <summary>
-        /// Gets or set the <see cref="LX.EasyWeb.XmlRpc.ITypeSerializerFactory"/>.
+        /// Gets or set the <see cref="LX.EasyWeb.XmlRpc.Serializer.ITypeSerializerFactory"/>.
         /// </summary>
         public ITypeSerializerFactory TypeSerializerFactory { get; set; }
 

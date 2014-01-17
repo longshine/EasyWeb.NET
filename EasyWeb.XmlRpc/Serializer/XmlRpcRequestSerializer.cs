@@ -65,7 +65,7 @@ namespace LX.EasyWeb.XmlRpc.Serializer
         /// <summary>
         /// Deserializes an XML-RPC request from a request stream.
         /// </summary>
-        /// <param name="reader">the <see cref="System.IO.Stream"/> to read</param>
+        /// <param name="requestStream">the <see cref="System.IO.Stream"/> to read</param>
         /// <param name="config">the context configuration</param>
         /// <param name="typeSerializerFactory">the <see cref="LX.EasyWeb.XmlRpc.Serializer.ITypeSerializerFactory"/> to get type serializers</param>
         /// <returns>a <see cref="LX.EasyWeb.XmlRpc.IXmlRpcRequest"/> read from the reader</returns>
@@ -101,7 +101,7 @@ namespace LX.EasyWeb.XmlRpc.Serializer
         /// <summary>
         /// Serializes an XML-RPC request to a request stream.
         /// </summary>
-        /// <param name="writer">the <see cref="System.IO.Stream"/> to write</param>
+        /// <param name="requestStream">the <see cref="System.IO.Stream"/> to write</param>
         /// <param name="request">the <see cref="LX.EasyWeb.XmlRpc.IXmlRpcRequest"/> to serialize</param>
         /// <param name="config">the context configuration</param>
         /// <param name="typeSerializerFactory">the <see cref="LX.EasyWeb.XmlRpc.Serializer.ITypeSerializerFactory"/> to get type serializers</param>

@@ -37,7 +37,7 @@ namespace LX.EasyWeb.XmlRpc.Serializer
         /// Serializes an XML-RPC response to a <see cref="System.Xml.XmlWriter"/>.
         /// </summary>
         /// <param name="writer">the <see cref="System.Xml.XmlWriter"/> to write</param>
-        /// <param name="request">the <see cref="LX.EasyWeb.XmlRpc.IXmlRpcResponse"/> to serialize</param>
+        /// <param name="response">the <see cref="LX.EasyWeb.XmlRpc.IXmlRpcResponse"/> to serialize</param>
         /// <param name="config">the context configuration</param>
         /// <param name="typeSerializerFactory">the <see cref="LX.EasyWeb.XmlRpc.Serializer.ITypeSerializerFactory"/> to get type serializers</param>
         /// <exception cref="System.Xml.XmlException">failed writing the response XML</exception>
@@ -58,8 +58,8 @@ namespace LX.EasyWeb.XmlRpc.Serializer
         /// <summary>
         /// Serializes an XML-RPC response to a response stream.
         /// </summary>
-        /// <param name="writer">the <see cref="System.IO.Stream"/> to write</param>
-        /// <param name="request">the <see cref="LX.EasyWeb.XmlRpc.IXmlRpcResponse"/> to serialize</param>
+        /// <param name="responseStream">the <see cref="System.IO.Stream"/> to write</param>
+        /// <param name="response">the <see cref="LX.EasyWeb.XmlRpc.IXmlRpcResponse"/> to serialize</param>
         /// <param name="config">the context configuration</param>
         /// <param name="typeSerializerFactory">the <see cref="LX.EasyWeb.XmlRpc.Serializer.ITypeSerializerFactory"/> to get type serializers</param>
         /// <exception cref="System.Xml.XmlException">failed writing the response XML</exception>

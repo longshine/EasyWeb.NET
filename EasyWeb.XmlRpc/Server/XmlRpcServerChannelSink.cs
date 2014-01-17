@@ -42,7 +42,7 @@ namespace LX.EasyWeb.XmlRpc.Server
         }
 
         /// <summary>
-        /// Gets or set the <see cref="LX.EasyWeb.XmlRpc.ITypeSerializerFactory"/>.
+        /// Gets or set the <see cref="LX.EasyWeb.XmlRpc.Serializer.ITypeSerializerFactory"/>.
         /// </summary>
         public ITypeSerializerFactory TypeSerializerFactory { get; set; }
 

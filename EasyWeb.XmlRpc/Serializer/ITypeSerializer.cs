@@ -25,7 +25,7 @@ namespace LX.EasyWeb.XmlRpc.Serializer
         /// </summary>
         /// <param name="reader">the <see cref="System.Xml.XmlReader"/> to read from</param>
         /// <param name="config">the <see cref="LX.EasyWeb.XmlRpc.IXmlRpcStreamConfig"/></param>
-        /// <param name="typeFactory">the <see cref="LX.EasyWeb.XmlRpc.Serializer.ITypeSerializerFactory"/> to create serializers</param>
+        /// <param name="typeSerializerFactory">the <see cref="LX.EasyWeb.XmlRpc.Serializer.ITypeSerializerFactory"/> to create serializers</param>
         /// <returns>an parsed value</returns>
         /// <exception cref="System.Xml.XmlException">throws if error occurs during parsing</exception>
         Object Read(XmlReader reader, IXmlRpcStreamConfig config, ITypeSerializerFactory typeSerializerFactory);
@@ -35,7 +35,7 @@ namespace LX.EasyWeb.XmlRpc.Serializer
         /// <param name="writer">the <see cref="System.Xml.XmlWriter"/> to write to</param>
         /// <param name="obj">the object to write</param>
         /// <param name="config">the <see cref="LX.EasyWeb.XmlRpc.IXmlRpcStreamConfig"/></param>
-        /// <param name="typeFactory">the <see cref="LX.EasyWeb.XmlRpc.Serializer.ITypeSerializerFactory"/> to create serializers</param>
+        /// <param name="typeSerializerFactory">the <see cref="LX.EasyWeb.XmlRpc.Serializer.ITypeSerializerFactory"/> to create serializers</param>
         void Write(XmlWriter writer, Object obj, IXmlRpcStreamConfig config, ITypeSerializerFactory typeSerializerFactory);
     }
 }

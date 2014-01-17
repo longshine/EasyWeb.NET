@@ -38,7 +38,7 @@ namespace LX.EasyWeb.XmlRpc.Server
         /// Executes requests from streams.
         /// </summary>
         /// <param name="config"></param>
-        /// <param name="serverStream">the <see cref="LX.EasyWeb.XmlRpc.Server.XmlRpcStreamServer+ServerStream"/> to process</param>
+        /// <param name="serverStream">the <see cref="IServerStream"/> to process</param>
         public void Execute(IXmlRpcStreamRequestConfig config, IServerStream serverStream)
         {
             Stream inputStream;
