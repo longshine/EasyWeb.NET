@@ -38,6 +38,9 @@ namespace LX.EasyWeb.XmlRpc.Server
 
         public IXmlRpcHandler GetHandler(String name)
         {
+            if (name == null)
+                throw new XmlRpcException("Missing handler name");
+
             if (_handlers.ContainsKey(name))
                 return _handlers[name];
             else if (name.IndexOf('.') >= 0)

@@ -17,6 +17,7 @@ namespace LX.EasyWeb.XmlRpc.Server
 {
     class ReflectiveXmlRpcHandler : IXmlRpcHandler
     {
+        static readonly Object[] Empty = new Object[0];
         private AbstractReflectiveHandlerMapping _mapping;
         private readonly XmlRpcMethod[] _methods;
         private Type _type;
@@ -38,17 +39,19 @@ namespace LX.EasyWeb.XmlRpc.Server
         {
             if (_mapping.AuthenticationHandler != null && !_mapping.AuthenticationHandler.IsAuthorized(request))
                 throw new XmlRpcException("Not authorized");
-            XmlRpcMethod method = GetMethod(request.Parameters);
-            ConvertParams(method.TypeConverters, request.Parameters);
+
+            Object[] args = request.Parameters ?? Empty;
+            XmlRpcMethod method = GetMethod(args);
+            ConvertParams(method.TypeConverters, args);
             //return Invoke(method.Method, _targetProvider == null ? request.Target : _targetProvider.GetTarget(request), request.Parameters);
             if (request.Target == null && _targetProvider != null)
                 request.Target = _targetProvider.GetTarget(request);
-            return Invoke(method.Method, request.Target, request.Parameters);
+            return Invoke(method.Method, request.Target, args);
         }
 
         public MethodInfo GetMethod(IXmlRpcRequest request)
         {
-            return GetMethod(request.Parameters).Method;
+            return GetMethod(request.Parameters ?? Empty).Method;
         }
 
         private static void ConvertParams(ITypeConverter[] converters, Object[] args)
